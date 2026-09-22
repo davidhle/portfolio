@@ -1,0 +1,39 @@
+/*
+ * Design tokens — Leuchtturm1917 Bauhaus Edition inspired palette.
+ * Placeholder hex values; David will fine-tune exact colors later.
+ * Every component should reference these instead of hardcoding values.
+ */
+:root {
+  /* Palette */
+  --color-paper: #f7f2e7;
+  --color-paper-alt: #fffdf6;
+  --color-ink: #26241f;
+  --color-ink-soft: #5c584d;
+  --color-red: #c8372a;
+  --color-red-soft: #e79289;
+  --color-blue: #1f3f7a;
+  --color-blue-soft: #7c94c4;
+  --color-yellow: #f0b429;
+  --color-yellow-soft: #f8d998;
+
+  /* Dot-grid background */
+  --dot-color: rgba(31, 63, 122, 0.18);
+  --dot-size: 2px;
+  --dot-spacing: 28px;
+
+  /* Typography */
+  --font-display: 'Kalam', 'Segoe Script', cursive;
+  --font-body: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 40px;
+  --space-6: 64px;
+
+  /* Sticker/card styling */
+  --radius-sticker: 8px;
+  --shadow-sticker: 0 6px 16px rgba(38, 36, 31, 0.16);
+}
