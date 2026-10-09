@@ -1,34 +1,20 @@
-import { useCallback, useRef } from 'react';
-import type { ReactZoomPanPinchContentRef } from 'react-zoom-pan-pinch';
-import { CanvasEngine } from './canvas/CanvasEngine';
-import { CanvasNode } from './canvas/CanvasNode';
-import { NavigationContext } from './canvas/NavigationContext';
-import { ZoomControls } from './components/ZoomControls';
-import { canvasSections } from './content/canvasSections';
+import { ThemeToggle } from './components/ThemeToggle';
+import { About } from './sections/About';
+import { Contact } from './sections/Contact';
+import { Hero } from './sections/Hero';
+import { Work } from './sections/Work';
+import './sections/sections.css';
 
-function App() {
-  const transformRef = useRef<ReactZoomPanPinchContentRef | null>(null);
-
-  const navigateTo = useCallback((nodeId: string) => {
-    transformRef.current?.zoomToElement(nodeId, { maxScale: 1.1 }, 650, 'easeInOutCubic');
-  }, []);
-
-  const focusIntroOnLoad = useCallback((ref: ReactZoomPanPinchContentRef) => {
-    ref.zoomToElement('intro', 1, 0);
-  }, []);
-
+export default function App() {
   return (
-    <NavigationContext.Provider value={navigateTo}>
-      <CanvasEngine ref={transformRef} onInit={focusIntroOnLoad}>
-        {canvasSections.map(({ id, position, size, Component }) => (
-          <CanvasNode key={id} id={id} position={position} size={size}>
-            <Component />
-          </CanvasNode>
-        ))}
-      </CanvasEngine>
-      <ZoomControls transformRef={transformRef} />
-    </NavigationContext.Provider>
+    <>
+      <ThemeToggle />
+      <main className="page">
+        <Hero />
+        <About />
+        <Work />
+        <Contact />
+      </main>
+    </>
   );
 }
-
-export default App;

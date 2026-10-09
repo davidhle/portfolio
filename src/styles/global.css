@@ -4,21 +4,53 @@
   box-sizing: border-box;
 }
 
-html,
-body,
-#root {
-  height: 100%;
-  margin: 0;
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
+  margin: 0;
   font-family: var(--font-body);
+  line-height: 1.6;
   color: var(--color-ink);
-  background: var(--color-paper);
+  background-color: var(--color-paper);
+  /* Dot grid: a repeating radial-gradient, recolored per theme via --dot-color */
+  background-image: radial-gradient(
+    circle,
+    var(--dot-color) var(--dot-size),
+    transparent calc(var(--dot-size) + 0.5px)
+  );
+  background-size: var(--dot-spacing) var(--dot-spacing);
+  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
-  overflow: hidden;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  line-height: 1.15;
+  margin: 0 0 var(--space-3);
+}
+
+a {
+  color: var(--color-blue);
 }
 
 button {
   font: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 3px;
 }

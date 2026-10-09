@@ -1,0 +1,21 @@
+.glass-card {
+  padding: var(--space-5);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-card {
+    background: var(--glass-bg-solid);
+  }
+}
+
+@media (max-width: 600px) {
+  .glass-card {
+    padding: var(--space-4);
+  }
+}
