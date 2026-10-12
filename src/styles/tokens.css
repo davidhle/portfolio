@@ -14,9 +14,14 @@
   --color-red: #d2232a; /* TODO(palette): Bauhaus red */
   --color-blue: #1f4e9c; /* TODO(palette): Bauhaus blue */
   --color-yellow: #eaaa00; /* TODO(palette): Bauhaus yellow ≈ GT "Buzz" gold */
+  /* Same hue as --color-yellow, darkened until white text on it passes WCAG AA
+     (4.54:1). Only for surfaces carrying white text — --color-yellow fails (2.05:1). */
+  --color-yellow-deep: #996f00;
 
-  /* Dot-grid background — full Bauhaus red in light mode */
-  --dot-color: var(--color-red);
+  /* Dot-grid background — Bauhaus red, faded so body text reads cleanly over it.
+     TODO(palette): opacity tuned by eye, not a confirmed value. */
+  --dot-opacity: 35%;
+  --dot-color: color-mix(in srgb, var(--color-red) var(--dot-opacity), transparent);
   --dot-size: 1.5px;
   --dot-spacing: 24px;
 
@@ -29,7 +34,7 @@
 
   /* Typography */
   --font-display: 'Unbounded', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  --font-body: 'Sora', system-ui, sans-serif;
 
   /* Spacing scale */
   --space-1: 4px;
@@ -40,9 +45,19 @@
   --space-6: 64px;
 
   --radius-card: 20px;
-  --content-width: 880px;
+  --wide-width: 1200px; /* page content width */
+
+  /* Left-edge nav tabs; the gutter fits a fully extended (active) tab */
+  --nav-tab-width: 32px;
+  --nav-gutter: calc(var(--nav-tab-width) + var(--space-3));
 
   color-scheme: light;
+}
+
+@media (max-width: 639px) {
+  :root {
+    --nav-tab-width: 22px;
+  }
 }
 
 :root[data-theme='dark'] {

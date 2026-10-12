@@ -16,6 +16,8 @@ html {
 
 body {
   margin: 0;
+  /* Reserve the left edge for the fixed SideNav tabs */
+  padding-left: var(--nav-gutter);
   font-family: var(--font-body);
   line-height: 1.6;
   color: var(--color-ink);

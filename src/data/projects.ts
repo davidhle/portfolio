@@ -2,12 +2,13 @@ export interface Project {
   id: string;
   title: string;
   tagline: string;
+  /** No case study page yet — card renders in a muted, inert state. */
+  comingSoon?: boolean;
 }
 
-// Visual placement only for Milestone 1 — these become clickable and pull
-// in real case-study content (see source links in docs/SPEC.md) once the
-// page-turn transition is wired up in Milestone 3.
 export const projects: Project[] = [
-  { id: 'choreomapper', title: 'ChoreoMapper', tagline: "Master's thesis — case study coming soon" },
-  { id: 'dabble', title: 'Dabble', tagline: 'Personal web app — case study coming soon' },
+  { id: 'dabble', title: 'Dabble', tagline: 'Personal hobby tracking & reflection web app' },
+  { id: 'choreomapper', title: 'ChoreoMapper', tagline: "Master's thesis — visualization and archival tool for dancers" },
+  { id: 'siri', title: 'Hey Siri Are You Feminist?', tagline: 'Research study on gender biases in voice assistants', comingSoon: true },
+  { id: 'arobot', title: 'ARobot for Sustainable Mobility in Seestadt', tagline: 'Speculative design of an AR-based robot for an urban space', comingSoon: true },
 ];

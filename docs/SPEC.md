@@ -38,15 +38,22 @@ texture rather than noise, without hiding the content.
 **Sections (page order):**
 - **Hero/intro** — "Hi, my name is David," name rendered in a Vietnamese-
   calligraphy-inspired flowing style (planned as a custom illustrated PNG,
-  not a web font), a byline ("M.Sc. HCI Graduate based in Berlin, Germany" —
-  placeholder, may change), nav links to About / Work / Contact, and two
-  project thumbnails (ChoreoMapper, Dabble) directly beneath the byline for
-  one-click access into their case studies.
+  not a web font), and a byline ("M.Sc. HCI Graduate based in Berlin,
+  Germany" — placeholder, may change). No project cards in the hero itself
+  (superseded — see "Open design decisions"); the hero's job is the intro,
+  Work is where all projects live. A placeholder portrait sits to the right
+  of the hero text, inside an organic horizontal-oblong shape (an
+  asymmetric, flowing blob outline — not a simple ellipse/circle — per
+  David's reference image; a CSS `border-radius` blob or SVG `clip-path`
+  both work, precision isn't critical for the placeholder).
 - **About**
-- **Work** — a fuller project section; the two flagship case studies may be
-  repeated here alongside anything else David wants to list (open design
-  decision, see below).
-- **Contact**
+- **Work** — the project grid: four cards today (ChoreoMapper, Dabble,
+  A Robot, Hey Siri), each leading into its own case study via the
+  page-turn transition. See "Work section layout" below for the responsive
+  behavior.
+- **CV** *(renamed from "Contact")* — CV content (education, career), with
+  contact links (LinkedIn, GitHub) as icons at the bottom of the section.
+  See "CV content" below for the actual copy.
 - **Stickers** — the currently-listening music widget, currently-reading
   book/reading list, and illustrated hobby stickers (pole dance, bouldering,
   crochet) live within the page layout now (a dedicated area, a sidebar, or
@@ -55,15 +62,120 @@ texture rather than noise, without hiding the content.
   "turn the page" into more detail, same pattern as the case studies.
 
 **Case studies remain the one exception to the single page.** Clicking a
-thumbnail/"Learn more" for ChoreoMapper or Dabble still triggers a "turn the
-page" transition out of the one-pager into a dedicated case study view.
-Pressing back, or clicking the "David Lê" signature (styled as a sticker,
-same calligraphy style as the name), returns to the page via the same
-transition in reverse.
+project card in Work triggers a "turn the page" transition out of the
+one-pager into a dedicated case study view. Pressing back, or clicking the
+"David Lê" signature (styled as a sticker, same calligraphy style as the
+name), returns to the page via the same transition in reverse.
+
+**Case study internal navigation:** once inside a case study, a secondary
+nav layer — styled like an outline/table of contents (think Word/Google
+Docs heading navigator) — appears hierarchically below the main site nav
+and lists that case study's own sections/headings for quick in-page
+jumping. See "Navigation" below.
 
 **Source content to port:**
-- ChoreoMapper: https://ledavid.framer.website/work/choreomapper
-- Dabble (live app): https://davidhle.github.io/dabble
+- ChoreoMapper — copy finalized, ready to port now (text only; the source
+  page has images/other media to bring over later):
+  https://ledavid.framer.website/work/choreomapper
+- Hey Siri — copy finalized, ready to port now (text only for now):
+  https://ledavid.framer.website/work/voice
+- Dabble (live app) — copy status not yet confirmed:
+  https://davidhle.github.io/dabble
+- A Robot — copy status not yet confirmed, no source link given yet.
+
+### Navigation
+
+Main nav is fixed to the left edge of the viewport (in the left padding/
+margin area), not a conventional top navbar. Visual treatment: each nav
+item reads as an annotation tab or sticky note — the kind of paper flag
+you'd stick on a book or journal page edge to bookmark a section — in
+keeping with the bullet-journal aesthetic. Stays fixed/visible while
+scrolling the one-pager.
+
+When a case study is open, a second nav layer appears hierarchically below
+the main left-edge nav: an outline/table-of-contents of that case study's
+own sections/headings (same idea as Word's or Google Docs' heading
+navigator), letting the reader jump within the case study rather than
+scrolling through it linearly. This outline is specific to the case study
+view and goes away when the reader returns to the one-pager.
+
+### Work section layout
+
+Four project cards today (ChoreoMapper, Dabble, A Robot, Hey Siri), laid
+out as a responsive grid, not a carousel:
+- Full-width desktop: one row of 4.
+- Mid-width: 2×2.
+- Narrow/mobile: a single column, one card per row (4 rows of 1).
+- Side padding sized so the breakpoint above actually fits 4 cards in one
+  row at typical desktop widths, rather than wrapping prematurely.
+
+**Why a grid over a carousel:** with a small, fixed number of items (4),
+a grid keeps every project visible without requiring an interaction, which
+matters for a portfolio where the goal is a recruiter or collaborator
+seeing all the work at a glance. Carousels solve a real problem when there
+are more items than fit in a view, but research on rotating carousels
+(e.g. Yale's usability guidance, and the broader "nobody clicks past slide
+one" findings common in carousel UX writing) consistently shows low
+engagement with anything past the first visible item — a real cost for a
+portfolio where every project should get equal visibility. A carousel is
+worth reconsidering later if the project count grows enough that a grid
+stops fitting comfortably, but isn't the right call at 4 items.
+
+### Layout
+
+All section content (hero, about, work, CV) shares one left alignment,
+matching the Work section's existing left edge — the Milestone 1 build had
+About/CV content inset further right than Work, which reads as
+inconsistent; fix by aligning every section's content block to the same
+left margin Work already uses.
+
+### CV content
+
+Real copy, ready to use as-is (not a placeholder):
+
+```
+EDUCATION
+(2020–2025) M.Sc. Human-Computer Interaction
+Bauhaus-Universität Weimar, Weimar, Germany
+
+(2021–2022) M.Sc. Media & Human-Centered Computing (Erasmus)
+Technische Universität Wien, Vienna, Austria
+
+(2015–2020) B.Sc. Computational Media
+Georgia Institute of Technology, Atlanta, USA
+
+(2019) Bachelor in Film, Television & Media Studies (Erasmus)
+Universidad Carlos III Madrid, Getafe, Spain
+
+(2017) Faculty-Led Undergraduate Summer Program
+Universitat Politècnica de Catalunya, Barcelona, Spain
+
+CAREER
+(2022–2023) HCI Research Intern
+Ex)Situ, Université Paris-Saclay, Paris, France
+
+(2019) Program Manager Intern
+Microsoft, Redmond, Washington, USA
+
+(2018) Strategic Solutions Engineer Intern
+Zuora, Atlanta, Georgia, USA
+
+(2017) Software Engineer Intern
+CareerBuilder, Norcross, Georgia, USA
+```
+
+Contact links at the bottom of the section, as icons:
+- LinkedIn: https://www.linkedin.com/in/davidle97/
+- GitHub: https://github.com/davidhle
+
+### Accessibility note — nav contrast
+
+The Work nav tab's text should be white; check actual contrast against the
+current yellow background and darken the yellow (just enough to pass WCAG
+AA, ~4.5:1 for normal-size text) if white doesn't read cleanly. The yellow
+is a shared design token used elsewhere in the palette, so confirm a
+darkened value still works everywhere else it's used before changing it
+globally — introduce a separate token instead if other uses would suffer.
 
 ### Superseded decisions
 
@@ -84,11 +196,17 @@ work directly:
   notebook or a swatch. Treat them as placeholders to refine once David can
   compare against the physical journal or a proper photo of its dot grid
   and cover.
-- **Where the case study thumbnails live** — hero only, or hero + repeated
-  in the Work section. Default below is hero-only for Milestone 1, with
-  Work holding a fuller project list later; revisit once there's real
-  content to arrange.
-- **Header/display font — decided: Unbounded.** See Typography below.
+- **Light-mode dot-grid opacity** needs a specific value — see Architecture
+  above.
+- **Copy status for Dabble and A Robot** isn't confirmed (ChoreoMapper and
+  Hey Siri are ready — see Vision → Source content to port). A Robot also
+  has no source link yet.
+- **Sticky-note nav visual details** (exact shape/texture of the tabs,
+  spacing, active-state styling) aren't specified beyond the "annotation
+  tab on a book/journal edge" direction in Navigation above — there's room
+  for a few rounds of visual iteration here.
+- **Header/display font — decided: Unbounded.** Body font — decided: Sora.
+  See Typography below.
 
 ## Typography
 
@@ -101,19 +219,18 @@ headers (About, Work, Contact), the nav, and any display-scale type; the
 "David"/"David Lê" name treatment stays a custom illustrated PNG, not a web
 font, so Unbounded doesn't need to carry that part.
 
-**Body font: Inter** (Google Fonts, free, variable weight). Chosen to pair
-with Unbounded rather than compete with it — Unbounded is heavy and
-geometric, so body copy needs to be quiet and highly legible at small sizes
-inside the glass cards. Inter is a neutral, widely-used grotesque with
-excellent legibility across weights, a large x-height that holds up at
-small sizes, and full language coverage (useful given David's name carries
-a Vietnamese diacritic and he may want Vietnamese text elsewhere). If
-Unbounded's coverage of accented/Vietnamese characters ever matters for a
-header, double-check glyph support before relying on it — Inter can serve
-as the fallback there too.
+**Body font: Sora** (Google Fonts, free, variable weight) — David's pick
+over the earlier Inter suggestion, to pair with Unbounded. Sora is a
+rounded-geometric grotesque, which reads as more of a family resemblance to
+Unbounded's own geometric construction than a neutral default like Inter
+would, while staying calmer and lighter-weight so it doesn't compete at
+body size inside the glass cards. If a Vietnamese word ever needs to appear
+in a header or body copy, double-check Sora's and Unbounded's accented-
+character glyph coverage before relying on either — this wasn't confirmed
+and a fallback stack may be needed for full diacritic support.
 
 Both are free, self-hostable, and available via Google Fonts — no licensing
-decision needed before Milestone 1.
+decision needed.
 
 ## Tech stack decisions
 
@@ -147,8 +264,8 @@ decision needed before Milestone 1.
 
 ## Architecture
 
-- **Section components.** Hero, About, Work, Contact, and the sticker area
-  are each their own component, composed on one page.
+- **Section components.** Hero, About, Work, CV, and the sticker area are
+  each their own component, composed on one page.
 - **`GlassCard` as a shared primitive.** Since nearly every piece of content
   sits inside a glass panel, build this early and reuse it everywhere
   rather than letting each section reimplement the blur/border/shadow
@@ -156,9 +273,12 @@ decision needed before Milestone 1.
 - **Design tokens file** drives color (paper white / Bauhaus red / blue /
   yellow accents, plus light and dark variants of each), typography, and
   the dot-grid background (a repeating CSS `radial-gradient`, not an image,
-  recolored per theme — full Bauhaus red in light mode, a dimmed/
-  desaturated variant in dark mode so it recedes rather than fighting the
-  content).
+  recolored per theme). In light mode the dots were too strong against
+  body text in the Milestone 1 build and need a lower opacity (reduce until
+  text reads cleanly over them — no confirmed value yet, tune by eye). Dark
+  mode already uses a dimmed/desaturated variant so it recedes rather than
+  fighting the content; re-check it once light mode's opacity is fixed, in
+  case the two need different treatment.
 - **Case study content** (ChoreoMapper, Dabble) as structured MDX/JSON, kept
   separate from layout/presentation components.
 - **Stickers** share a common wrapper component (tilt, shadow, washi-tape
@@ -188,12 +308,8 @@ decision needed before Milestone 1.
 4. Dark/light toggle wired up: defaults to system preference, persists the
    user's explicit choice, swaps the `data-theme` attribute.
 5. Hero section: placeholder name treatment (plain styled text is fine
-   before the final calligraphy illustration exists), byline set in Inter,
-   nav links and section headers set in Unbounded, and two static
-   project-thumbnail placeholders (ChoreoMapper, Dabble) beneath the
-   byline. Thumbnails are visual placement only at this stage — they
-   become clickable once the page-turn transition and real case study
-   content are wired up in Milestone 3.
+   before the final calligraphy illustration exists), byline set in Sora,
+   nav and section headers set in Unbounded.
 6. About / Work / Contact sections as placeholder content inside
    `GlassCard`s, with working anchor-link nav and smooth scroll between
    them.
@@ -201,9 +317,11 @@ decision needed before Milestone 1.
 
 **Done when:** the deployed site shows hero → about → work → contact as one
 scrolling page; the Bauhaus-red dot grid is visible and recedes properly
-behind glass cards; the dark/light toggle works and persists; nav links
-smooth-scroll to each section; the two project thumbnails are visible
-beneath the byline (not yet interactive).
+behind glass cards (shipped, but light-mode opacity needs the tune-down
+noted in Architecture above); the dark/light toggle works and persists; nav
+links smooth-scroll to each section. *(Status: shipped — David's first look
+is in, see the polish/follow-on items layered on top in Open design
+decisions and Milestone 3.)*
 
 ### Milestone 2 — Real content + static stickers
 
@@ -215,13 +333,21 @@ beneath the byline (not yet interactive).
 
 ### Milestone 3 — Case studies + page-turn transition
 
-- Dedicated case-study views for ChoreoMapper and Dabble, content ported
-  from the source links above.
-- Wire up the hero thumbnails placed in Milestone 1 (and any thumbnail in
-  the Work section) so clicking either triggers the transition into its
-  case study.
+- Dedicated case-study view template, with ChoreoMapper and Hey Siri
+  content ported first (copy is finalized for both — text only; images and
+  other media come later). Dabble and A Robot follow once their copy is
+  ready.
+- Wire up the Work section's four project cards so clicking one triggers
+  the transition into its case study (only ChoreoMapper and Hey Siri will
+  have real destinations until the other two have content — Dabble/A Robot
+  cards can stay visually present but inert, or get a "coming soon" state,
+  until then).
+- In-case-study outline/TOC nav: a secondary nav layer, generated from that
+  case study's own section headings, appearing hierarchically below the
+  main left-edge nav (see Navigation above) for jumping within the case
+  study.
 - Page-turn transition: start with a View-Transitions-driven crossfade/
-  morph from the thumbnail; refine toward the full 3D page-curl once the
+  morph from the card; refine toward the full 3D page-curl once the
   pattern works end-to-end.
 - Back navigation / signature-click returns to the page via the same
   transition in reverse.

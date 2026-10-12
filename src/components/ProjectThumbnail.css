@@ -1,4 +1,5 @@
 .project-thumbnail.glass-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
@@ -18,11 +19,44 @@
 }
 
 .project-thumbnail__title {
-  font-family: var(--font-display);
+  margin: 0;
+  font-size: 1rem;
   font-weight: 600;
+  line-height: 1.3;
 }
 
 .project-thumbnail__tagline {
+  margin: 0;
   font-size: 0.875rem;
+  line-height: 1.5;
   color: var(--color-ink-soft);
+}
+
+/* No destination yet: visibly present, but muted and inert */
+.project-thumbnail--coming-soon {
+  cursor: default;
+  user-select: none;
+}
+
+.project-thumbnail--coming-soon .project-thumbnail__image {
+  filter: grayscale(1);
+  opacity: 0.5;
+}
+
+/* Muted via color rather than opacity, so the text keeps AA contrast */
+.project-thumbnail--coming-soon .project-thumbnail__title {
+  color: var(--color-ink-soft);
+}
+
+.project-thumbnail__badge {
+  position: absolute;
+  top: calc(var(--space-3) + var(--space-2));
+  left: calc(var(--space-3) + var(--space-2));
+  padding: 2px var(--space-2);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  background: var(--glass-bg-solid);
+  border: 1px solid var(--glass-border);
 }
