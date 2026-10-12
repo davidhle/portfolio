@@ -259,8 +259,15 @@ decision needed.
   full page-curl physics as a later polish pass.
 - **Framer Motion** for supporting UI animation (scroll-reveal, hover
   states) as needed.
-- **Deployment:** GitHub Pages or Vercel (static site, no backend needed for
-  Milestone 1).
+- **Deployment: Cloudflare Pages**, connected to the `portfolio` GitHub
+  repo for continuous deployment (auto-build on every push to `main`).
+  Chosen over GitHub Pages/Vercel because the domain (`ledavid.me`) is
+  already on Cloudflare — Pages can attach it with auto-managed DNS and
+  free SSL, no cross-service DNS configuration needed. Build command
+  `npm run build` (Vite default), output directory `dist`. Needs a
+  `public/_redirects` file with `/* /index.html 200` for SPA fallback
+  routing (so direct links to case-study routes like `/work/choreomapper`
+  don't 404 on refresh).
 
 ## Architecture
 

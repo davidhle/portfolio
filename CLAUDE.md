@@ -47,6 +47,14 @@ polish plus pulled-forward Milestone 3 work:
   scope — see `docs/SPEC.md` → Navigation and → Milestone 3.
 Update this section as these land.
 
+## Deployment
+
+Cloudflare Pages, connected to this repo for continuous deployment on push
+to `main`. Build command `npm run build`, output dir `dist`. Domain:
+ledavid.me (already on Cloudflare — see `docs/SPEC.md` → Tech stack
+decisions → Deployment for why, and the required `public/_redirects` SPA
+fallback file).
+
 ## Stack quick-reference
 
 - Vite + React + TypeScript
