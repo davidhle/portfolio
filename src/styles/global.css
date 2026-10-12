@@ -56,3 +56,17 @@ button {
   outline: 2px solid var(--color-blue);
   outline-offset: 3px;
 }
+
+/* Page turn (Work card ↔ case study): View Transitions crossfade, with the
+   clicked card morphing into the case study header via a shared
+   view-transition-name. First pass — the 3D page curl comes later, keyed
+   off html[data-page-turn='forward' | 'back']. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.35s;
+}
+
+::view-transition-group(*) {
+  animation-duration: 0.45s;
+  animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}

@@ -74,10 +74,14 @@ and lists that case study's own sections/headings for quick in-page
 jumping. See "Navigation" below.
 
 **Source content to port:**
-- ChoreoMapper — copy finalized, ready to port now (text only; the source
-  page has images/other media to bring over later):
-  https://ledavid.framer.website/work/choreomapper
-- Hey Siri — copy finalized, ready to port now (text only for now):
+- ChoreoMapper — final copy delivered 2026-10-12 as
+  `src/content/case-studies/choreomapper.mdx` (see Architecture →
+  Case study content as MDX). Includes working embeds (2 Figma prototypes,
+  a YouTube video, a Notion page) — photos are still placeholders pending
+  the actual image files, but this is no longer "text only," embeds are in
+  scope now. Original source: https://ledavid.framer.website/work/choreomapper
+- Hey Siri — copy finalized, not yet delivered in this format; same
+  treatment as ChoreoMapper once pasted. Original source:
   https://ledavid.framer.website/work/voice
 - Dabble (live app) — copy status not yet confirmed:
   https://davidhle.github.io/dabble
@@ -99,6 +103,23 @@ navigator), letting the reader jump within the case study rather than
 scrolling through it linearly. This outline is specific to the case study
 view and goes away when the reader returns to the one-pager.
 
+### Case study page chrome
+
+- **Outline/TOC nav sits on the right**, not the left (first build had it on
+  the left, stacked under the main nav — moved per feedback on the first
+  real case study). It has a collapse/expand toggle — a directional arrow
+  icon (`→` to collapse/slide the panel out, `←` to expand/bring it back),
+  not a `<`/`>` chevron-button pair — that slides it fully off-screen to
+  the right when collapsed. When collapsed, the case-study content column
+  resizes to match the same width/left-alignment the home page's sections
+  use (see Layout above), so the page-turn transition between home and a
+  case study reads as seamless rather than a layout jump.
+- **Previous/next case study navigation**, alongside "← Back to Work" —
+  lets a reader page through case studies sequentially. With only
+  ChoreoMapper live so far, there's nothing to page to yet; build the
+  mechanism now (ordered by the Work section's card order) so it
+  activates naturally as Hey Siri, Dabble, and A Robot get real pages.
+
 ### Work section layout
 
 Four project cards today (ChoreoMapper, Dabble, A Robot, Hey Siri), laid
@@ -108,6 +129,11 @@ out as a responsive grid, not a carousel:
 - Narrow/mobile: a single column, one card per row (4 rows of 1).
 - Side padding sized so the breakpoint above actually fits 4 cards in one
   row at typical desktop widths, rather than wrapping prematurely.
+- **Each card shows its tags** (the same tag list from that case study's MDX
+  frontmatter, e.g. ChoreoMapper's Design Research / Design Methods /
+  Participatory Design / Prototyping) — small labels/chips on the card
+  itself, not just visible after opening the case study, so a visitor can
+  gauge a project's focus at a glance from the grid.
 
 **Why a grid over a carousel:** with a small, fixed number of items (4),
 a grid keeps every project visible without requiring an interaction, which
@@ -186,6 +212,15 @@ direction is dropped in favor of the one-page layout above — noted here so
 a Claude Code session doesn't resurrect canvas-engine code from an earlier
 commit or conversation.
 
+## Known bugs
+
+- **Dark-mode theme-toggle icon** on the case study page falls back to a
+  missing-glyph box (square with a question mark) instead of the moon
+  icon that renders correctly on the home page — icon reference/import is
+  broken specifically in that view.
+- **Home button (the "David Lê" signature pill) has a stray white border**
+  in both themes — remove it; doesn't match the rest of the chrome.
+
 ## Open design decisions
 
 Flagging these rather than silently picking one, since they shape layout
@@ -259,17 +294,20 @@ decision needed.
   full page-curl physics as a later polish pass.
 - **Framer Motion** for supporting UI animation (scroll-reveal, hover
   states) as needed.
-- **Deployment: Cloudflare Pages**, connected to the `portfolio` GitHub
-  repo for continuous deployment (auto-build on every push to `main`).
-  Chosen over GitHub Pages/Vercel because the domain (`ledavid.me`) is
-  already on Cloudflare — Pages can attach it with auto-managed DNS and
-  free SSL, no cross-service DNS configuration needed. Build command
-  `npm run build` (Vite default), output directory `dist`. SPA fallback
-  routing (so direct links to case-study routes like `/work/choreomapper`
-  don't 404 on refresh) is handled by the committed `wrangler.jsonc`
-  (`assets.not_found_handling: "single-page-application"`). Don't add a
-  `_redirects` file — it conflicts with that setting and fails the deploy
-  with an "infinite loop detected" error.
+- **Deployment: Cloudflare Workers (static assets)**, connected to the
+  `portfolio` GitHub repo via Workers Builds for continuous deployment
+  (auto-build + `wrangler deploy` on every push to `main`). Chosen over
+  GitHub Pages/Vercel because the domain (`ledavid.me`) is already on
+  Cloudflare. Note this is the modern Workers-assets path, not classic
+  Cloudflare Pages — Cloudflare's current default for a new Git-connected
+  project. Build command `npm run build` (Vite default), output directory
+  `dist`, deploy command `npx wrangler deploy`. SPA fallback routing (so
+  direct links to case-study routes like `/work/choreomapper` don't 404)
+  is handled automatically via `"assets": { "not_found_handling":
+  "single-page-application" }` in the auto-generated `wrangler.jsonc` —
+  **do not add a `public/_redirects` file**, it conflicts with that
+  setting and causes a redirect-loop deploy failure (hit and fixed on
+  2026-10-12).
 
 ## Architecture
 
@@ -288,8 +326,46 @@ decision needed.
   mode already uses a dimmed/desaturated variant so it recedes rather than
   fighting the content; re-check it once light mode's opacity is fixed, in
   case the two need different treatment.
-- **Case study content** (ChoreoMapper, Dabble) as structured MDX/JSON, kept
-  separate from layout/presentation components.
+- **Case study content as MDX** (decided — not JSON): real content turned
+  out to interleave prose, headings, bullet lists, and media (photos,
+  Figma embeds, a YouTube video, a Notion embed) at specific points within
+  the flow, which MDX expresses naturally and a block-schema JSON would
+  just end up reinventing. One `.mdx` file per case study (e.g.
+  `src/content/case-studies/choreomapper.mdx`), frontmatter for page
+  metadata (title, subtitle, tags, affiliations, location, year), body
+  content as markdown + a small shared component vocabulary:
+  `<ImagePlaceholder label count />` (photos not yet supplied — renders a
+  placeholder box), `<VideoEmbed src label />`, `<FigmaEmbed src label />`,
+  `<NotionEmbed src label />` (Figma embed URLs should use `scaling=
+  fit-width`, not the default `scale-down` — the latter letterboxes the
+  prototype inside its frame instead of filling the available width,
+  which was a problem on the first real embed; try `scale-down-width` as
+  a fallback if `fit-width` crops awkwardly for a given prototype. Also
+  give the `FigmaEmbed` component's `<iframe>` enough height to show the
+  prototype's full height, not just its width — the current fixed/short
+  iframe height crops the bottom of the prototype regardless of the
+  `scaling` value. The black bars are top/bottom only, not left/right —
+  confirmed on the "Timeline prototype" embed after the first attempt at
+  this fix — which means the container's aspect ratio is still too tall
+  for the actual frame; a generic default ratio (the earlier "3:4 if not
+  given" guess) isn't good enough. **All three ChoreoMapper Figma frames
+  are confirmed 1440×1024px** — set `<FigmaEmbed>`'s container to
+  `aspect-ratio: 1440 / 1024` (≈ 1.40625) for all three embeds in
+  `choreomapper.mdx`, rather than any guessed/default ratio, so the
+  container's shape matches the prototypes exactly and there's no leftover
+  space on any side for black bars to appear in. Keep `frameWidth`/
+  `frameHeight` as props on `<FigmaEmbed>` (defaulting to 1440/1024) so a
+  future case study's embeds — which will likely use different frame
+  dimensions — can override them per instance. Where a sliver is still
+  unavoidable, set that container's background to match the page's
+  glass-card/theme background instead of plain black, so it blends in),
+  and `<ThemeComparison previous updated />`
+  (a before/after theme-list card, first used for ChoreoMapper's interview
+  section — reusable wherever a similar comparison comes up). Needs an MDX
+  integration for Vite (e.g. `@mdx-js/rollup`) if not already set up.
+  `##`/`###` headings in the MDX double as the source for the in-case-study
+  outline/TOC nav (see Navigation) — keep heading structure clean and
+  consistent for that reason, independent of visual styling.
 - **Stickers** share a common wrapper component (tilt, shadow, washi-tape
   styling) and differ only in content/data.
 
@@ -305,42 +381,48 @@ decision needed.
 
 ## Roadmap
 
-### Milestone 1 — Static one-page shell *(current)*
+### Milestone 1 — Static one-page shell *(shipped)*
 
-1. Scaffold a fresh Vite + React + TypeScript project in the `portfolio`
-   repo (skip if already done).
-2. Design tokens file: color palette (paper white, Bauhaus red, blue and
-   yellow accents) with light/dark variants, plus the dot-grid CSS
-   background that recolors per theme.
-3. `GlassCard` component (frosted/blurred container), built first since
-   every section uses it.
-4. Dark/light toggle wired up: defaults to system preference, persists the
-   user's explicit choice, swaps the `data-theme` attribute.
-5. Hero section: placeholder name treatment (plain styled text is fine
-   before the final calligraphy illustration exists), byline set in Sora,
-   nav and section headers set in Unbounded.
-6. About / Work / Contact sections as placeholder content inside
-   `GlassCard`s, with working anchor-link nav and smooth scroll between
-   them.
-7. Deployed to GitHub Pages or Vercel for a shareable, iterable link.
+1. ✅ Fresh Vite + React + TypeScript project.
+2. ✅ Design tokens file (palette + dot-grid background); light-mode dot
+   opacity was tuned down after the first look.
+3. ✅ `GlassCard` component.
+4. ✅ Dark/light toggle, persisted.
+5. ✅ Hero section (placeholder name treatment, byline in Sora, portrait
+   placeholder in an organic oblong frame).
+6. ✅ Hero / About / Work / CV sections with working left-edge sticky-note
+   nav (not the original top anchor-link nav — upgraded per David's
+   request) and consistent left alignment across sections.
+7. ✅ Work section as a responsive 4-card grid (1 row of 4 → 2×2 → 4×1),
+   holding all four projects (ChoreoMapper, Dabble, A Robot, Hey Siri) with
+   "coming soon" states where content isn't ready yet.
+8. ✅ CV section (renamed from Contact) with real education/career copy and
+   LinkedIn/GitHub icon links.
+9. ✅ Deployed: Cloudflare Workers (static assets) via Workers Builds,
+   connected to `main`, custom domain `ledavid.me` attached and live
+   (deploy issues from 2026-10-12 — uncommitted `wrangler.jsonc` causing a
+   `_redirects` conflict — are resolved, see Tech stack decisions →
+   Deployment).
 
-**Done when:** the deployed site shows hero → about → work → contact as one
-scrolling page; the Bauhaus-red dot grid is visible and recedes properly
-behind glass cards (shipped, but light-mode opacity needs the tune-down
-noted in Architecture above); the dark/light toggle works and persists; nav
-links smooth-scroll to each section. *(Status: shipped — David's first look
-is in, see the polish/follow-on items layered on top in Open design
-decisions and Milestone 3.)*
+**Status: fully shipped**, including the follow-on polish round (dot
+opacity, Sora body font, grid behavior, left-edge nav redesign, CV content,
+hero portrait placeholder, nav contrast). Still open from this milestone:
+exact palette hex values aren't confirmed against the actual notebook, and
+the sticky-note nav's precise visual styling was a first pass, not
+necessarily final (see Open design decisions above).
 
-### Milestone 2 — Real content + static stickers
+### Milestone 2 — Real content + static stickers *(partially done)*
 
-- Real About/Contact/Work copy.
-- Static (non-interactive yet) sticker widgets: music, reading, hobby icons,
-  placed within the layout.
-- Palette hex values confirmed against the actual notebook/swatch
-  (typography is already decided — Unbounded + Inter, see Typography above).
+- CV copy is real and shipped (done, moved under Milestone 1 above since it
+  landed with that round of work).
+- **Still open:** real About copy (still placeholder); static sticker
+  widgets (music, reading, hobby icons) not built yet; palette hex values
+  not confirmed against the actual notebook/swatch. Typography is already
+  decided — Unbounded + Sora, see Typography above.
+- Not a blocker for Milestone 3 below — the case-study work doesn't depend
+  on any of these, so it's reasonable to defer them and come back after.
 
-### Milestone 3 — Case studies + page-turn transition
+### Milestone 3 — Case studies + page-turn transition *(current — starting now)*
 
 - Dedicated case-study view template, with ChoreoMapper and Hey Siri
   content ported first (copy is finalized for both — text only; images and

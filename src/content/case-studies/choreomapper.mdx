@@ -1,0 +1,248 @@
+---
+title: "ChoreoMapper"
+subtitle: "Designing an interactive digital tool for female dancers to archive and visualize their dance career trajectories"
+tags:
+  - Design Research
+  - Design Methods
+  - Participatory Design
+  - Prototyping
+affiliations: "Ex)Situ, Université Paris-Saclay & Bauhaus-Universität Weimar"
+location: "Paris, France & Weimar, Germany"
+year: "2023–2025"
+---
+
+{/* NOTE: title/subtitle above are carried over from the earlier structural
+pull of the live Framer page — they weren't in this latest paste, so
+confirm the wording still matches what you want. */}
+
+This project addressed the lack of tools available for dance practitioners
+to adequately document and archive their complex and often non-linear
+careers. Through this project, I co-designed an interactive spiral
+timeline, providing a novel proposal for a personal data visualization
+model for the dance & HCI field.
+
+> How can a co-designed interactive visualization tool effectively
+> capture, archive and communicate the complex, multi-faceted and
+> non-linear career paths of female dance practitioners?
+>
+> — Thesis' Research Question
+
+## Project Context & Personal Motivation
+
+> How would personal narratives of female dance practitioners from urban
+> and club style dances compare to those from more institutionalized ones?
+
+{/* This question appeared twice in a row in your paste — included once
+here as what looks like a secondary research question. Let me know if the
+repeat was intentional (e.g., meant to appear in two places) or just a
+paste duplicate. */}
+
+### Project Context
+
+The inception of this project took place in Basque Country, specifically
+Biarritz, France. Bertha Martinez, dancer and researcher, noticed and
+addressed a lack of communication between the French and the Spanish
+communities of traditional Basque dancers. Though practicing the same
+dance and being a part of similar communities, there was no active sharing
+of their practice.
+
+She reached out to my supervisor and her PhD student to start
+collaborating on a project to bridge gaps and bring visibility to female
+dance practitioners.
+
+### Personal Motivation
+
+I myself am a dancer who practices styles from club dances (e.g., shuffle
+dance, house dance) and my experience with documenting my dance practice
+and my reflections throughout my own dance trajectory influenced my
+motivation and positioning as the primary researcher.
+
+## Interviews
+
+### Semi-Structured Interviews
+
+I conducted two semi-structured interviews with dance practitioners from
+urban/club dance styles: dancehall and shuffle dance.
+
+As the interviewer, I used an interview guide to hear and learn about
+their journey as a dancer — from their first interests in dance to where
+they were at the time of interviewing — while probing for objective and
+subjective data.
+
+- **Objective:** dance & life-related events (year & duration, location,
+  dance company/institution, people involved, funding, role, object of
+  interest, …)
+- **Subjective:** narrative of career path, artistic essence, intentions,
+  inspirations, desires
+
+<ImagePlaceholder label="Interview setup" />
+
+<ThemeComparison
+  previous={["Style changes", "Career changes", "Changes in belonging", "Bodily transformation"]}
+  updated={["Dance style", "Belonging/community", "Bodily changes", "Mode of transmission", "Role"]}
+/>
+
+{/* Formatting suggestion for the photo + before/after themes overlay you
+flagged as unsure: I've represented it as a dedicated ThemeComparison
+component (two labeled lists — "previous" vs "new" themes) placed right
+after the interview-setup photo, rather than trying to overlay text on
+the image itself. Styled as a sticky-note-style annotation card, it'd fit
+the journal aesthetic and stay legible at any screen size, which text
+baked into an image wouldn't. Treat this as a starting proposal, not
+final — easy to restyle once you see it in place. */}
+
+### Key Insights
+
+Then, I transcribed the interviews and coded them in comparison to
+previous codes, which described what themes the interviewee's personal
+life- and career narratives shared with each other.
+
+Despite coming from different dance communities, the women I interviewed
+shared characteristics in their trajectories to the other interviewees,
+and I added another theme that was shared.
+
+## Co-Design Workshop 1: Ideating the Cartography
+
+### Ideation Workshop with an Internal Team
+
+I led a workshop with our internal team (me, 1 HCI PhD student, 1 HCI
+Postdoc, my supervisor, and an information visualization researcher) to
+**ideate a visualization for a shared design space across multiple dance
+trajectories**, focusing on how to:
+
+- Distinguish the different themes
+- Present and attach different media
+
+<ImagePlaceholder label="Workshop 1 artifacts" count={4} />
+
+### Low Fidelity Prototype
+
+I decided to continue with a cartographic aesthetic for the visualization,
+using concentric circles that mimic topographic cartographies.
+
+In this metaphor, concentric circles represented individual events in a
+dancer's career timeline, and the themes would be distinguished visually
+(e.g., a different color for each theme). Dancers with events associated
+with similar dance styles would be clustered closer together.
+
+At this point in the thesis project, I scoped down the focus of my work to
+an individual dance practitioner's career trajectory — both its visual and
+interaction design. To quickly contextualize this next goal for an
+ideation workshop focused on that, I quickly prototyped a low-fidelity
+concept of the larger cartographic design, using paper, pen and a video
+editing software, CapCut.
+
+<ImagePlaceholder label="Paper prototype, behind-the-scenes" />
+
+<VideoEmbed src="https://youtu.be/lJsWh4lWI8E" label="Paper prototype walkthrough" />
+
+## Co-Design Workshop 2: Defining the Individual Vis
+
+<ImagePlaceholder label="Participant creations, Workshop 2" count={4} />
+
+### Ideation Workshop with a Larger Group of Researchers
+
+To ideate on the visualization for an individual dance practitioner, I led
+another workshop with the Ex)Situ research group as a whole, which
+involved 17 people (those from the previous workshop, and more HCI
+researchers and their PhD students).
+
+The workshop began with a brief introduction to the project and the
+proposed visual metaphor of a topographically inspired cartography of
+dancers, represented by a visualization of their career trajectories. I
+then prompted participants to create artifacts with the goal of
+encapsulating the events of a dancer's timeline, all while considering:
+
+- The different themes
+- Various media attached to events (e.g., notes, videos)
+- Connections events have to other dancers
+
+## First 2 Figma Prototype Iterations
+
+### Building the Spiral
+
+The second workshop produced a variety of visual metaphors to represent a
+dancer's trajectory. The one that I chose due to its alignment with the
+nonlinearity of the interviewees' experiences was a spiral-shaped
+timeline.
+
+Below is the first iteration of a high-fidelity prototype made with Figma,
+supporting the following experiences:
+
+- Exploration of events
+- Highlighting a specific time period to display
+- Toggling to a linear view
+
+<FigmaEmbed frameWidth={1440} frameHeight={1024} src="https://embed.figma.com/proto/EwbWpbTHhqBtQCNqO77NmQ/Choreographas?page-id=0%3A1&node-id=1-2&starting-point-node-id=1%3A2&scaling=fit-width&content-scaling=fixed&starting-point-node-id=3347%3A20&embed-host=share" label="Spiral timeline — first iteration" />
+
+### Putting the Spiral in Context
+
+To further extend the previous prototype, I created another prototype
+which highlights the context in which the dancer's trajectory is placed.
+
+I did so by calling back to the original metaphor of the shared
+cartographic space to bring visibility to the larger context of the
+dancers' narratives: the communities in which they take space in through
+their practice. Other visual cues such as colors and shapes of the
+events' representations are meant to reflect themes in their narratives
+and subjective data (e.g., a spiky red shape may represent an injury).
+
+<FigmaEmbed frameWidth={1440} frameHeight={1024} src="https://embed.figma.com/proto/EwbWpbTHhqBtQCNqO77NmQ/Choreographas?page-id=0%3A1&node-id=376-682&viewport=321%2C611%2C0.08&scaling=fit-width&content-scaling=fixed&starting-point-node-id=3347%3A20&embed-host=share" label="Spiral timeline in context — second iteration" />
+
+## Third Figma Prototype Iteration
+
+### Another Iteration Before Testing
+
+Before presenting the prototype to female dancers to evaluate, I iterated
+on the design of the individual's timeline to include a mockup of what
+they could do when adding an event to their timeline:
+
+- Adding information (title, location, date, notes)
+- Customizing the appearance of the event on the timeline (shape & color)
+- Adding media to the event
+
+The timeline prototype was populated with events from my own dance
+career's trajectory.
+
+<FigmaEmbed frameWidth={1440} frameHeight={1024} src="https://embed.figma.com/proto/WQcZZ50GZfs3ZVdrpWmorS/ChoreoMapper?page-id=0%3A1&node-id=3347-20&viewport=195%2C389%2C0.08&scaling=fit-width&content-scaling=fixed&starting-point-node-id=3347%3A20&embed-host=share" label="Timeline prototype, populated with real events" />
+
+## User Testing, Analysis & Future Work
+
+### User Test with a Notion Page
+
+To evaluate the prototype's design and its alignment on female dancers'
+perception of their career trajectories, I created a hybrid probe using a
+Notion page with questionnaires and the interactive prototype embedded
+into the page.
+
+What I probed for:
+
+- First impressions of the visualization
+- What parts of their dance journey they'd want to document
+- Thoughts on having all dance documentation in one place
+- Reactions to the timeline's design, aesthetics, symbolism
+- Suggestions on improving the tool
+- Whether or not they'd use it in their own archival practice
+
+### Insights from the Hybrid Probe
+
+Using thematic analysis, I generated 3 themes that guide future proposals
+for future work for personal data visualization for dance practitioners:
+
+- Desire for connection/community features
+- Customizability of the visualization and the space it exists in
+- Flexibility of expression (i.e., mobile versus desktop, and the amount
+  of effort required to create their timeline)
+
+### Potential Future Work
+
+- Taking the work back to Biarritz, France
+- Community map view
+- Templates & sandbox timeline creation
+- Re-exploration into data physicalizations
+- More participatory methods with dancers on further design iterations
+- A mobile-first design for the web-app (e.g., a PWA app)
+
+<ImagePlaceholder label="Closing visuals" count={2} />
+
+<NotionEmbed src="https://davidle.notion.site/ebd/193269cdfa4680809f68d89e71a8cc10" label="Hybrid probe — Notion page" />

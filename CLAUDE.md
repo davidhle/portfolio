@@ -26,36 +26,48 @@ handling) from an earlier commit or conversation.
 
 ## Current status
 
-Milestone 1 (static one-page shell) shipped. Working through a round of
-polish plus pulled-forward Milestone 3 work:
-- Light-mode dot-grid opacity needs lowering (text legibility).
-- Body font changed from Inter to Sora.
-- Work section expanded to 4 project cards (ChoreoMapper, Dabble, A Robot,
-  Hey Siri) with responsive grid layout (not a carousel — see
-  `docs/SPEC.md` → Work section layout).
-- Nav rebuilt as fixed left-edge sticky-note tabs (shipped); Work tab's
-  text needs to be white, darkening the yellow token if contrast requires
-  it (see `docs/SPEC.md` → Accessibility note — nav contrast).
-- All sections need one consistent left alignment, matching Work's (see
-  `docs/SPEC.md` → Layout).
-- Contact section renamed to CV, with real education/career copy and
-  LinkedIn/GitHub icons at the bottom (see `docs/SPEC.md` → CV content).
-- Hero needs a placeholder portrait image, organic horizontal-oblong shape,
-  to the right of the hero text.
-- ChoreoMapper and Hey Siri copy is ready to port into a new case-study
-  page template (text only for now); in-case-study outline/TOC nav is new
-  scope — see `docs/SPEC.md` → Navigation and → Milestone 3.
+**Milestone 1 is fully shipped and live at ledavid.me** (Cloudflare
+Workers, deployed via Workers Builds from `main`). Includes the full
+one-page shell, left-edge sticky-note nav, 4-card Work grid, CV section
+with real content, dark/light toggle, and dot-grid theming.
+
+**Milestone 3 in progress** on branch `milestone-3-case-studies` (case
+studies + page-turn transition). Milestone 2 (real About copy, static
+stickers, confirmed palette hex values) is intentionally deferred since it
+doesn't block Milestone 3 — see `docs/SPEC.md` → Roadmap.
+- Done: MDX pipeline (`@mdx-js/rollup` + frontmatter; a local remark plugin
+  in `plugins/remark-headings.ts` exports `headings` for the outline), case
+  study template (`src/case-study/`), History-API router (`src/router.ts`,
+  no router dependency), View-Transitions crossfade/morph from the Work
+  card, collapsible outline/TOC nav on the right edge (column matches the
+  home page's `.page` box when it's collapsed), prev/next case study pager
+  in Work-grid order, signature sticker + Back returning to the one-pager,
+  MDX component vocabulary in `src/components/mdx/`. ChoreoMapper is live at `/work/choreomapper`.
+- Work cards show the case study's frontmatter `tags`, read via
+  `import … from './x.mdx?frontmatter'` (`plugins/mdx-frontmatter-only.ts`
+  — metadata only, so the MDX bodies stay in their lazy chunks).
+- `<FigmaEmbed frameWidth={W} frameHeight={H}>` sizes the embed from the
+  prototype frame's real size (default 1440×1024 — ChoreoMapper's three
+  frames, confirmed). Neither the embed URL nor Figma's Embed API events
+  expose frame dimensions, so read W/H off the frame in Figma. Letterbox
+  bars inside the embed are Figma's own canvas color (not stylable from our
+  CSS) — an accurate frame size is the fix.
+- A Work card links to its case study automatically once
+  `src/content/case-studies/<project id>.mdx` exists (and it isn't
+  `comingSoon`).
+- Open: Hey Siri MDX not delivered yet; real photos for `ImagePlaceholder`;
+  full 3D page-curl (hook: `html[data-page-turn='forward'|'back']`).
 Update this section as these land.
 
 ## Deployment
 
-Cloudflare Pages, connected to this repo for continuous deployment on push
-to `main`. Build command `npm run build`, output dir `dist`. Domain:
-ledavid.me (already on Cloudflare — see `docs/SPEC.md` → Tech stack
-decisions → Deployment for why). SPA fallback comes from the committed
-`wrangler.jsonc` (`not_found_handling: "single-page-application"`) — do not
-add a `_redirects` file; it conflicts and causes an "infinite loop" deploy
-error.
+Cloudflare Workers (static assets, via Workers Builds — not classic Pages),
+connected to this repo for continuous deployment on push to `main`. Build
+command `npm run build`, output dir `dist`, deploy command
+`npx wrangler deploy`. Domain: ledavid.me (already on Cloudflare).
+SPA fallback is handled by `not_found_handling: single-page-application`
+in `wrangler.jsonc` — **no `_redirects` file**, it causes a redirect-loop
+deploy failure. See `docs/SPEC.md` → Tech stack decisions → Deployment.
 
 ## Stack quick-reference
 
