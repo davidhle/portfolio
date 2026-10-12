@@ -1,0 +1,73 @@
+.side-nav {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  z-index: 10;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.side-nav__tab {
+  /* Vertical text reading bottom-to-top, like a spine label */
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  width: var(--nav-tab-width);
+  padding: var(--space-3) 0;
+  display: flex;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  color: var(--tab-fg);
+  background: var(--tab-bg);
+  /* rotate(180deg) flips the box, so these radii land on the outer edge */
+  border-radius: 6px 0 0 6px;
+  box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.14);
+  transition: width 0.2s ease;
+}
+
+.side-nav__tab:hover {
+  width: calc(var(--nav-tab-width) + var(--space-2));
+}
+
+/* Active tab sticks out furthest — keep in sync with --nav-gutter */
+.side-nav__tab[aria-current='location'] {
+  width: calc(var(--nav-tab-width) + var(--space-3));
+}
+
+.side-nav__tab--red {
+  --tab-bg: var(--color-red);
+  --tab-fg: #fff;
+}
+
+.side-nav__tab--yellow {
+  --tab-bg: var(--color-yellow);
+  --tab-fg: #fff;
+}
+
+.side-nav__tab--blue {
+  --tab-bg: var(--color-blue);
+  --tab-fg: #fff;
+}
+
+/* Dark mode accents are lighter, so every tab takes dark (navy) text */
+:root[data-theme='dark'] .side-nav__tab {
+  --tab-fg: var(--color-paper);
+}
+
+@media (max-width: 639px) {
+  .side-nav__tab {
+    padding: var(--space-2) 0;
+    font-size: 0.625rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .side-nav__tab {
+    transition: none;
+  }
+}
