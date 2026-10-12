@@ -264,10 +264,12 @@ decision needed.
   Chosen over GitHub Pages/Vercel because the domain (`ledavid.me`) is
   already on Cloudflare — Pages can attach it with auto-managed DNS and
   free SSL, no cross-service DNS configuration needed. Build command
-  `npm run build` (Vite default), output directory `dist`. Needs a
-  `public/_redirects` file with `/* /index.html 200` for SPA fallback
+  `npm run build` (Vite default), output directory `dist`. SPA fallback
   routing (so direct links to case-study routes like `/work/choreomapper`
-  don't 404 on refresh).
+  don't 404 on refresh) is handled by the committed `wrangler.jsonc`
+  (`assets.not_found_handling: "single-page-application"`). Don't add a
+  `_redirects` file — it conflicts with that setting and fails the deploy
+  with an "infinite loop detected" error.
 
 ## Architecture
 

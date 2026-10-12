@@ -52,8 +52,10 @@ Update this section as these land.
 Cloudflare Pages, connected to this repo for continuous deployment on push
 to `main`. Build command `npm run build`, output dir `dist`. Domain:
 ledavid.me (already on Cloudflare — see `docs/SPEC.md` → Tech stack
-decisions → Deployment for why, and the required `public/_redirects` SPA
-fallback file).
+decisions → Deployment for why). SPA fallback comes from the committed
+`wrangler.jsonc` (`not_found_handling: "single-page-application"`) — do not
+add a `_redirects` file; it conflicts and causes an "infinite loop" deploy
+error.
 
 ## Stack quick-reference
 
