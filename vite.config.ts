@@ -3,8 +3,7 @@ import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  // Served at davidhle.github.io/portfolio/ via GitHub Pages, not a
-  // custom domain, so asset URLs need the repo name prefix.
-  base: '/portfolio/',
+  // Served from the root of ledavid.me via Cloudflare Pages, so the
+  // default base ('/') is correct. Don't reintroduce a repo-name prefix.
   plugins: [react()],
 })

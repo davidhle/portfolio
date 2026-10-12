@@ -17,4 +17,5 @@ npm run dev
 - Fonts: Unbounded (display) + Inter (body) via Google Fonts
 - Theming: CSS custom properties in `src/styles/tokens.css`, swapped via
   `data-theme` on `<html>`
-- Deployed to GitHub Pages from `main` (`.github/workflows/deploy.yml`)
+- Deployed to Cloudflare Pages (ledavid.me) on push to `main`; build
+  `npm run build`, output `dist`
