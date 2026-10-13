@@ -6,7 +6,7 @@ import { projects } from '../data/projects';
 export function Work() {
   return (
     <section id="work" className="section">
-      <h2>Work</h2>
+      <h2>Highlighted Work Samples</h2>
       <div className="work__grid">
         {projects.map((project) => (
           <ProjectThumbnail key={project.id} project={project} />

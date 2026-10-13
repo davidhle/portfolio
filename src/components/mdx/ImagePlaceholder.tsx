@@ -10,7 +10,7 @@ export function ImagePlaceholder({ label, count = 1 }: ImagePlaceholderProps) {
   const boxes = Math.max(1, Math.floor(count));
   return (
     <figure className="mdx-figure">
-      <div className={`image-placeholder image-placeholder--${Math.min(boxes, 4)}`}>
+      <div className={`image-placeholder image-placeholder--${boxes > 4 ? 'many' : boxes}`}>
         {Array.from({ length: boxes }, (_, i) => (
           <div
             key={i}

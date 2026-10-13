@@ -9,6 +9,7 @@ tags:
 affiliations: "Ex)Situ, Université Paris-Saclay & Bauhaus-Universität Weimar"
 location: "Paris, France & Weimar, Germany"
 year: "2023–2025"
+coverImage: "hero.png"
 ---
 
 {/* NOTE: title/subtitle above are carried over from the earlier structural
@@ -29,8 +30,17 @@ model for the dance & HCI field.
 
 ## Project Context & Personal Motivation
 
+<MediaSplit
+  side="right"
+  image="personal motivation.JPG"
+  alt="David mid-performance on stage at a shuffle dance tournament, arms out, wearing a black jacket over a white tank top, with a crowd watching and filming behind him."
+  label="Me competing at a shuffle dance tournament"
+>
+
 > How would personal narratives of female dance practitioners from urban
-> and club style dances compare to those from more institutionalized ones?
+> and club style dances compare to those that have more institutionalized career pathways?
+
+</MediaSplit>
 
 {/* This question appeared twice in a row in your paste — included once
 here as what looks like a secondary research question. Let me know if the
@@ -61,6 +71,13 @@ motivation and positioning as the primary researcher.
 
 ### Semi-Structured Interviews
 
+<MediaSplit
+  side="right"
+  image="interview-setup.JPG"
+  alt="Overhead view of a small white table set up for an interview: a laptop, two mugs, a plate of waffles and apples, a water bottle, a handheld audio recorder on a mini tripod, and a tablet showing a voice recording."
+  label="Interview setup"
+>
+
 I conducted two semi-structured interviews with dance practitioners from
 urban/club dance styles: dancehall and shuffle dance.
 
@@ -75,7 +92,7 @@ subjective data.
 - **Subjective:** narrative of career path, artistic essence, intentions,
   inspirations, desires
 
-<ImagePlaceholder label="Interview setup" />
+</MediaSplit>
 
 <ThemeComparison
   previous={["Style changes", "Career changes", "Changes in belonging", "Bodily transformation"]}
@@ -113,7 +130,15 @@ trajectories**, focusing on how to:
 - Distinguish the different themes
 - Present and attach different media
 
-<ImagePlaceholder label="Workshop 1 artifacts" count={4} />
+<ImageSlideshow
+  label="Workshop 1 artifacts"
+  items={[
+    { src: "DW1.1.png", alt: "A large sheet divided into four numbered quadrants of hand-drawn map ideas — scattered dots, clustered topographic rings and a dome-like 3D form — each with a sticky note describing the idea." },
+    { src: "DW1.2.png", alt: "Sketch numbered 4: a stick figure's path winds through media items (video, text, images), with colored scribbles marking different themes, above a timeline labeled 'option' and 'time'." },
+    { src: "DW1.3.png", alt: "Sketch numbered 2: a circle divided into colored segments, crossed by flowing paths between points, with red lines and marks tracing connections." },
+    { src: "DW1.4.png", alt: "Sketch of two topographic islands drawn as concentric contour lines, joined by dashed orange paths; a pink sticky note reads '1 note → 1 person, w/ lines of connections out to others / other notes, topography lines with different categories', and a legend lists style, career, bodily transformations, belonging, venue/media." },
+  ]}
+/>
 
 ### Low Fidelity Prototype
 
@@ -132,13 +157,25 @@ ideation workshop focused on that, I quickly prototyped a low-fidelity
 concept of the larger cartographic design, using paper, pen and a video
 editing software, CapCut.
 
-<ImagePlaceholder label="Paper prototype, behind-the-scenes" />
+<Figure
+  src="paper-prototype-setup.jpeg"
+  alt="Behind the scenes of the paper prototype video: a phone records from a wooden beam above a table, looking down at a printed cartographic map, paper cut-outs and a pointer stick, between colorful painted wooden blocks."
+  label="Paper prototype, behind-the-scenes"
+/>
 
 <VideoEmbed src="https://youtu.be/lJsWh4lWI8E" label="Paper prototype walkthrough" />
 
 ## Co-Design Workshop 2: Defining the Individual Vis
 
-<ImagePlaceholder label="Participant creations, Workshop 2" count={4} />
+<ImageSlideshow
+  label="Participant creations, Workshop 2"
+  items={[
+    { src: "DW2.1.jpg", alt: "A participant holds a flat clay disc of concentric rings in white, blue, red and yellow; beside it is a sketch of colored clay and yarn shapes annotated with 'influence between two dancers'." },
+    { src: "DW2.2.jpg", alt: "A participant's hand-drawn page of ideas: dancers represented as sliced concentric circles, 2D and 3D plots of dancers, a spherical network, a polyhedral necklace where each face is a slice, and hover interactions that reveal associated media." },
+    { src: "DW2.3.jpg", alt: "Two painted popsicle sticks, orange and green, dotted with colored stickers, with red clay rings looped on the green one and joined to the orange one by yellow string." },
+    { src: "DW2.4.jpg", alt: "Close-up of a hand holding up a small white clay spiral cone by a string, flecked with orange, green and red marks." },
+  ]}
+/>
 
 ### Ideation Workshop with a Larger Group of Researchers
 
@@ -224,6 +261,12 @@ What I probed for:
 - Suggestions on improving the tool
 - Whether or not they'd use it in their own archival practice
 
+<Figure
+  src="probe-previews-mobile.png"
+  alt="Three phone screenshots of the Notion probe in dark mode: a 'Getting to know you' form with a data consent checkbox, the embedded spiral timeline prototype, and a 'Prototype Feedback & Insights' form asking for first impressions."
+  label="The hybrid probe on mobile"
+/>
+
 ### Insights from the Hybrid Probe
 
 Using thematic analysis, I generated 3 themes that guide future proposals
@@ -234,6 +277,13 @@ for future work for personal data visualization for dance practitioners:
 - Flexibility of expression (i.e., mobile versus desktop, and the amount
   of effort required to create their timeline)
 
+<MiroEmbed
+  src="https://miro.com/app/live-embed/uXjVIQWkZO0=/?focusWidget=3458764621905001320&embedMode=view_only_without_ui&embedId=172868239254"
+  width={768}
+  height={496}
+  label="Affinity mapping the probe responses in Miro"
+/>
+
 ### Potential Future Work
 
 - Taking the work back to Biarritz, France
@@ -242,7 +292,5 @@ for future work for personal data visualization for dance practitioners:
 - Re-exploration into data physicalizations
 - More participatory methods with dancers on further design iterations
 - A mobile-first design for the web-app (e.g., a PWA app)
-
-<ImagePlaceholder label="Closing visuals" count={2} />
 
 <NotionEmbed src="https://davidle.notion.site/ebd/193269cdfa4680809f68d89e71a8cc10" label="Hybrid probe — Notion page" />

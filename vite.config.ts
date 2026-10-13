@@ -22,4 +22,11 @@ export default defineConfig({
     },
     react({ include: /\.(jsx|js|mdx|md|tsx|ts)$/ }),
   ],
+  optimizeDeps: {
+    // The dep scanner can't load `*.mdx?frontmatter` imports (it doesn't run
+    // mdxFrontmatterOnly's load hook), so the scan fails and deps get found
+    // one at a time — which split react-dom and react-dom/client into
+    // mismatched chunks. Pre-bundle them together up front instead.
+    include: ['react', 'react/jsx-runtime', 'react/jsx-dev-runtime', 'react-dom', 'react-dom/client'],
+  },
 })

@@ -6,8 +6,11 @@
   padding: var(--space-3);
 }
 
-/* Placeholder image area until real case-study imagery exists */
+/* Cover image from the case study's frontmatter, or a placeholder pattern */
 .project-thumbnail__image {
+  display: block;
+  width: 100%;
+  object-fit: cover;
   aspect-ratio: 16 / 10;
   margin-bottom: var(--space-2);
   border-radius: calc(var(--radius-card) - 8px);
@@ -16,6 +19,12 @@
     color-mix(in srgb, var(--color-blue) 35%, transparent),
     color-mix(in srgb, var(--color-yellow) 35%, transparent)
   );
+}
+
+/* Themed covers: one image per portfolio theme */
+:root:not([data-theme='dark']) .project-thumbnail__image--dark,
+:root[data-theme='dark'] .project-thumbnail__image--light {
+  display: none;
 }
 
 .project-thumbnail__title {

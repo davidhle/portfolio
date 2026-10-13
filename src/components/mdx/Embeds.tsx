@@ -6,7 +6,7 @@ interface EmbedProps {
 }
 
 interface EmbedFrameProps extends EmbedProps {
-  variant: 'video' | 'figma' | 'notion';
+  variant: 'video' | 'figma' | 'notion' | 'miro';
   allow?: string;
   style?: CSSProperties;
 }
@@ -75,6 +75,29 @@ export function FigmaEmbed({ src, label, frameWidth = 1440, frameHeight = 1024 }
 /** `src` is a published Notion page's embed URL (…notion.site/ebd/…). */
 export function NotionEmbed({ src, label }: EmbedProps) {
   return <EmbedFrame src={src} label={label} variant="notion" />;
+}
+
+interface MiroEmbedProps extends EmbedProps {
+  /** Size from Miro's embed code (only the ratio is used). Defaults to Miro's 768×496. */
+  width?: number;
+  height?: number;
+}
+
+/**
+ * `src` is the live-embed URL from Miro's Share → Embed code
+ * (miro.com/app/live-embed/…). The board must be viewable by anyone with
+ * the link, or visitors get a Miro login screen instead.
+ */
+export function MiroEmbed({ src, label, width = 768, height = 496 }: MiroEmbedProps) {
+  return (
+    <EmbedFrame
+      src={src}
+      label={label}
+      variant="miro"
+      allow="fullscreen"
+      style={{ aspectRatio: `${width} / ${height}` }}
+    />
+  );
 }
 
 function youTubeEmbedUrl(src: string) {

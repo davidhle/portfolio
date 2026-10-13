@@ -41,11 +41,13 @@ texture rather than noise, without hiding the content.
   not a web font), and a byline ("M.Sc. HCI Graduate based in Berlin,
   Germany" — placeholder, may change). No project cards in the hero itself
   (superseded — see "Open design decisions"); the hero's job is the intro,
-  Work is where all projects live. A placeholder portrait sits to the right
-  of the hero text, inside an organic horizontal-oblong shape (an
-  asymmetric, flowing blob outline — not a simple ellipse/circle — per
-  David's reference image; a CSS `border-radius` blob or SVG `clip-path`
-  both work, precision isn't critical for the placeholder).
+  Work is where all projects live. A real portrait (`david-landing.jpg`,
+  added to the repo under `/content/` 2026-10-13 — no longer a placeholder)
+  sits to the right of the hero text, inside an organic horizontal-oblong
+  shape (an asymmetric, flowing blob outline — not a simple ellipse/circle
+  — per David's reference image; a CSS `border-radius` blob or SVG
+  `clip-path` both work). The blob frame is sized **25% larger** than the
+  first build's placeholder version.
 - **About**
 - **Work** — the project grid: four cards today (ChoreoMapper, Dabble,
   A Robot, Hey Siri), each leading into its own case study via the
@@ -80,12 +82,30 @@ jumping. See "Navigation" below.
   a YouTube video, a Notion page) — photos are still placeholders pending
   the actual image files, but this is no longer "text only," embeds are in
   scope now. Original source: https://ledavid.framer.website/work/choreomapper
-- Hey Siri — copy finalized, not yet delivered in this format; same
-  treatment as ChoreoMapper once pasted. Original source:
+- Hey Siri — final copy delivered 2026-10-12 as
+  `src/content/case-studies/hey-siri.mdx` (see Architecture →
+  Case study content as MDX). Includes 8 real participant-response card
+  images (not placeholders — see `ParticipantResponseCarousel` below) plus
+  2 still-placeholder image spots (the 16-page probe booklet, and the
+  final probe-design photo). Original source:
   https://ledavid.framer.website/work/voice
 - Dabble (live app) — copy status not yet confirmed:
   https://davidhle.github.io/dabble
-- A Robot — copy status not yet confirmed, no source link given yet.
+- A Robot — first-draft copy delivered 2026-10-13 as
+  `src/content/case-studies/arobot.mdx` (see Architecture → Case study
+  content as MDX), drafted from the final presentation PDF and the summary
+  site. Confirmed metadata: tags Speculative Design, Design Futures,
+  Augmented Reality, Design Thinking, Gamification; location Vienna,
+  Austria (Seestadt Aspern); year 2022; affiliation Technische Universität
+  Wien (Erasmus semester). The first team project among the case studies —
+  credits Mira Thieme and Lily Hecke via the `collaborators` frontmatter
+  field. Includes real images (the hero/cover, the storyboard, the
+  design-workshop whiteboard sketch, and two Seestadt field-trip photos in
+  an `ImageSlideshow`)
+  plus one still-placeholder spot (the cardboard prototype). The
+  research-question blockquote is a proposed framing, not from the source
+  materials — confirm it before publishing. Original source:
+  https://thedavidle.wixsite.com/home/arobot
 
 ### Navigation
 
@@ -134,6 +154,11 @@ out as a responsive grid, not a carousel:
   Participatory Design / Prototyping) — small labels/chips on the card
   itself, not just visible after opening the case study, so a visitor can
   gauge a project's focus at a glance from the grid.
+- **Each card's thumbnail image comes from that case study's `coverImage`
+  frontmatter field** (new — see Architecture → Case study content as
+  MDX). Hey Siri's is a real photo now (added directly to the repo,
+  2026-10-12); ChoreoMapper's isn't set yet, so its card can fall back to
+  a placeholder/pattern treatment until one is chosen.
 
 **Why a grid over a carousel:** with a small, fixed number of items (4),
 a grid keeps every project visible without requiring an interaction, which
@@ -233,9 +258,9 @@ work directly:
   and cover.
 - **Light-mode dot-grid opacity** needs a specific value — see Architecture
   above.
-- **Copy status for Dabble and A Robot** isn't confirmed (ChoreoMapper and
-  Hey Siri are ready — see Vision → Source content to port). A Robot also
-  has no source link yet.
+- **Copy status for Dabble** isn't confirmed (ChoreoMapper and Hey Siri
+  are final, A Robot has a first draft — see Vision → Source content to
+  port).
 - **Sticky-note nav visual details** (exact shape/texture of the tabs,
   spacing, active-state styling) aren't specified beyond the "annotation
   tab on a book/journal edge" direction in Navigation above — there's room
@@ -332,7 +357,16 @@ decision needed.
   the flow, which MDX expresses naturally and a block-schema JSON would
   just end up reinventing. One `.mdx` file per case study (e.g.
   `src/content/case-studies/choreomapper.mdx`), frontmatter for page
-  metadata (title, subtitle, tags, affiliations, location, year), body
+  metadata (title, subtitle, tags, `collaborators`, affiliations,
+  location, year, and `coverImage` — a path to an asset under that case study's own assets
+  folder, used as the Work-grid card thumbnail; optional, a case study
+  without one yet falls back to a placeholder/pattern card). For team
+  projects, `collaborators` is a list of teammates' names (e.g.
+  `collaborators: [Mira Thieme, Lily Hecke]`, first used for A Robot);
+  the case study header shows them as a "Collaborators" detail, before
+  Affiliations. Leave it out for solo work rather than listing David
+  alone, and still name the teammates once in the opening paragraph so the
+  credit reads in the prose too. Body
   content as markdown + a small shared component vocabulary:
   `<ImagePlaceholder label count />` (photos not yet supplied — renders a
   placeholder box), `<VideoEmbed src label />`, `<FigmaEmbed src label />`,
@@ -359,10 +393,69 @@ decision needed.
   dimensions — can override them per instance. Where a sliver is still
   unavoidable, set that container's background to match the page's
   glass-card/theme background instead of plain black, so it blends in),
-  and `<ThemeComparison previous updated />`
+  `<ThemeComparison previous updated />`
   (a before/after theme-list card, first used for ChoreoMapper's interview
-  section — reusable wherever a similar comparison comes up). Needs an MDX
-  integration for Vite (e.g. `@mdx-js/rollup`) if not already set up.
+  section — reusable wherever a similar comparison comes up), and
+  `<ParticipantResponseCarousel label items />` (new, first used in
+  Hey Siri's Key Findings section — `items` is an array of `{ src, alt }`
+  pairs pointing at real image assets, not placeholders; renders as a
+  horizontally scrollable row of cards, matching the source Framer
+  carousel's behavior: auto-scrolls, and pauses on hover/pointer-over so a
+  reader can actually read a card. Image assets for a given case study
+  live at `src/content/case-studies/assets/<case-study-slug>/`, e.g.
+  `src/content/case-studies/assets/hey-siri/participant-2-sex-question.png`
+  — `src` values in `items` are filenames relative to that folder), and
+  `<ImageSlideshow label items />` (new — same `items` shape as
+  `ParticipantResponseCarousel`, but a different interaction pattern:
+  one image visible at a time, with prev/next arrow buttons and a dot
+  pagination indicator below, matching the reference Framer carousel
+  used for the Hey Siri cultural-probe booklet's 16 pages — not
+  auto-scrolling, reader-driven instead), `<MediaSplit side image alt
+  placeholderLabel>` (new — wraps a block of prose as its children and
+  lays it out in two columns against an image: text on one side, image on
+  the other (`side="left" | "right"` picks which), collapsing to a single
+  stacked column on narrow viewports. Pass `image` for a real asset path,
+  or `placeholderLabel` to render an `ImagePlaceholder` in that slot
+  instead when there's no real photo yet. `side` names the image's side;
+  `alt` and `label` (caption) describe the image. Layout (2026-10-13):
+  columns are top-aligned (`align-items: start`), and in the two-column
+  layout the text sets the row height — the image fills that height with
+  `object-fit: cover` (never below 200px) rather than a tall photo
+  stretching the row past a short text block; stacked, the image keeps its
+  natural proportions. In ChoreoMapper it's used twice:
+  pairing a real photo (with caption, "Me competing at a shuffle dance
+  tournament") against the section's opening research-question blockquote
+  in "Project Context & Personal Motivation" (`side="right"`) — moved
+  here from the shorter Personal Motivation subsection text after that
+  pairing read as unbalanced (too much empty space below the short
+  paragraph, next to the taller portrait photo; the quote block's own
+  padding/accent bar gives it more visual weight to pair against) — and
+  the Interview Setup photo under Semi-Structured Interviews (`side=
+  "right"`, still a placeholder, replacing the plain `<ImagePlaceholder
+  label="Interview setup" />` block that was there before). General
+  guidance for this component: top-align the two columns (`align-items:
+  start`) rather than centering, so if one side is taller, the extra
+  space reads as a natural trailing gap rather than an awkward
+  imbalance — and if a future pairing still looks off, prefer capping the
+  image's height to roughly match its paired text (via `object-fit:
+  cover`) over leaving a tall image stretching the row.
+- **Hero portrait fine positioning:** the photo's crop/position within the
+  blob frame should leave a small gap between the top of David's head and
+  the blob's top edge (~10px) rather than sitting flush against it —
+  nudge via `object-position` or a small `transform: translateY(...)` on
+  the image inside the clipped frame, whichever fits how the frame's
+  already built.
+- `<ZoomableImage src alt placeholderLabel />` (new — opens a
+  pan-and-zoom lightbox on click/tap, for an image with enough fine detail
+  that it needs to be explored rather than just viewed larger, the way
+  you'd zoom into a Miro board itself. First use: an affinity-mapping/
+  Miro-board image under ChoreoMapper's Key Insights subsection — the
+  interview coding step described in that text doesn't have an image yet,
+  so this is currently a placeholder (`placeholderLabel="Affinity mapping
+  (Miro board)"`) until the real board screenshot is supplied; confirm
+  that's the intended spot for it before building further case studies'
+  equivalent images on this pattern). Needs an MDX integration for Vite
+  (e.g. `@mdx-js/rollup`) if not already set up.
   `##`/`###` headings in the MDX double as the source for the in-case-study
   outline/TOC nav (see Navigation) — keep heading structure clean and
   consistent for that reason, independent of visual styling.
@@ -426,13 +519,17 @@ necessarily final (see Open design decisions above).
 
 - Dedicated case-study view template, with ChoreoMapper and Hey Siri
   content ported first (copy is finalized for both — text only; images and
-  other media come later). Dabble and A Robot follow once their copy is
-  ready.
+  other media come later). *(Done.)* A Robot's first-draft copy and images
+  landed 2026-10-13 (pending David's proofread and the proposed research
+  question); Dabble has a draft too, pending review.
 - Wire up the Work section's four project cards so clicking one triggers
   the transition into its case study (only ChoreoMapper and Hey Siri will
   have real destinations until the other two have content — Dabble/A Robot
   cards can stay visually present but inert, or get a "coming soon" state,
-  until then).
+  until then). *(Done for ChoreoMapper and Hey Siri. Dabble and A Robot
+  stay `comingSoon` in `src/data/projects.ts` until their copy is
+  confirmed; removing the flag links the card and adds the page to the
+  prev/next sequence.)*
 - In-case-study outline/TOC nav: a secondary nav layer, generated from that
   case study's own section headings, appearing hierarchically below the
   main left-edge nav (see Navigation above) for jumping within the case

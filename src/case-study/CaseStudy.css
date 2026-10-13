@@ -68,6 +68,15 @@
   );
 }
 
+/* A real cover image is shown whole, at its own proportions */
+.case-study__cover--image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  background: none;
+}
+
 .case-study__tags {
   list-style: none;
   margin: 0 0 var(--space-3);

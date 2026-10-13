@@ -31,32 +31,19 @@ Workers, deployed via Workers Builds from `main`). Includes the full
 one-page shell, left-edge sticky-note nav, 4-card Work grid, CV section
 with real content, dark/light toggle, and dot-grid theming.
 
-**Milestone 3 in progress** on branch `milestone-3-case-studies` (case
-studies + page-turn transition). Milestone 2 (real About copy, static
-stickers, confirmed palette hex values) is intentionally deferred since it
-doesn't block Milestone 3 — see `docs/SPEC.md` → Roadmap.
-- Done: MDX pipeline (`@mdx-js/rollup` + frontmatter; a local remark plugin
-  in `plugins/remark-headings.ts` exports `headings` for the outline), case
-  study template (`src/case-study/`), History-API router (`src/router.ts`,
-  no router dependency), View-Transitions crossfade/morph from the Work
-  card, collapsible outline/TOC nav on the right edge (column matches the
-  home page's `.page` box when it's collapsed), prev/next case study pager
-  in Work-grid order, signature sticker + Back returning to the one-pager,
-  MDX component vocabulary in `src/components/mdx/`. ChoreoMapper is live at `/work/choreomapper`.
-- Work cards show the case study's frontmatter `tags`, read via
-  `import … from './x.mdx?frontmatter'` (`plugins/mdx-frontmatter-only.ts`
-  — metadata only, so the MDX bodies stay in their lazy chunks).
-- `<FigmaEmbed frameWidth={W} frameHeight={H}>` sizes the embed from the
-  prototype frame's real size (default 1440×1024 — ChoreoMapper's three
-  frames, confirmed). Neither the embed URL nor Figma's Embed API events
-  expose frame dimensions, so read W/H off the frame in Figma. Letterbox
-  bars inside the embed are Figma's own canvas color (not stylable from our
-  CSS) — an accurate frame size is the fix.
-- A Work card links to its case study automatically once
-  `src/content/case-studies/<project id>.mdx` exists (and it isn't
-  `comingSoon`).
-- Open: Hey Siri MDX not delivered yet; real photos for `ImagePlaceholder`;
-  full 3D page-curl (hook: `html[data-page-turn='forward'|'back']`).
+**Milestone 3 (case studies + page-turn transition) is underway.**
+ChoreoMapper and Hey Siri case study pages are both built (branch
+`milestone-3-case-studies`), with the outline/TOC nav, prev/next navigation
+between them, and Figma-embed fixes. A Robot and Dabble have draft pages
+pending David's review; their cards stay "Coming soon" until then. A Work card links to its case study
+once `src/content/case-studies/<project id>.mdx` exists; that case study's
+images live in `src/content/case-studies/assets/<project id>/` and MDX `src`
+values are filenames relative to it. See `docs/SPEC.md` → Vision → "Source
+content to port" for each file's status.
+Milestone 2 (real About copy, static stickers, confirmed palette hex
+values) is intentionally deferred since it doesn't block Milestone 3 — see
+`docs/SPEC.md` → Roadmap for the full breakdown.
+
 Update this section as these land.
 
 ## Deployment

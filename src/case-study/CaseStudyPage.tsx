@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { GlassCard } from '../components/GlassCard';
 import { mdxComponents } from '../components/mdx';
 import { Signature } from '../components/Signature';
+import { CaseStudyIdContext, caseStudyAssetUrl } from '../content/case-studies/assets';
 import type { CaseStudyModule } from '../content/case-studies/types';
 import { pageTurnName } from '../router';
 import { CaseStudyPager } from './CaseStudyPager';
@@ -21,6 +22,7 @@ const DEFAULT_TITLE = document.title;
 // card it was opened from, so the card morphs into it.
 export function CaseStudyPage({ id, study, outlineOpen }: CaseStudyPageProps) {
   const { default: Content, frontmatter: meta } = study;
+  const cover = meta.coverImage && caseStudyAssetUrl(id, meta.coverImage);
 
   useEffect(() => {
     document.title = `${meta.title} — David Lê`;
@@ -30,6 +32,7 @@ export function CaseStudyPage({ id, study, outlineOpen }: CaseStudyPageProps) {
   }, [meta.title]);
 
   const details = [
+    ['Collaborators', meta.collaborators?.join(', ')],
     ['Affiliations', meta.affiliations],
     ['Location', meta.location],
     ['Year', meta.year],
@@ -48,8 +51,13 @@ export function CaseStudyPage({ id, study, outlineOpen }: CaseStudyPageProps) {
         className="case-study__header"
         style={{ viewTransitionName: pageTurnName(id) }}
       >
-        {/* Same placeholder art as the Work card, so the morph reads as one object */}
-        <div className="case-study__cover" aria-hidden="true" />
+        {/* Same image (or placeholder art) as the Work card, so the morph reads as one object.
+            Decorative: the title below names the project. */}
+        {cover ? (
+          <img className="case-study__cover case-study__cover--image" src={cover} alt="" decoding="async" />
+        ) : (
+          <div className="case-study__cover" aria-hidden="true" />
+        )}
         {meta.tags && meta.tags.length > 0 && (
           <ul className="case-study__tags" aria-label="Methods">
             {meta.tags.map((tag) => (
@@ -72,7 +80,9 @@ export function CaseStudyPage({ id, study, outlineOpen }: CaseStudyPageProps) {
       </GlassCard>
 
       <GlassCard as="article" className="case-study__body">
-        <Content components={mdxComponents} />
+        <CaseStudyIdContext value={id}>
+          <Content components={mdxComponents} />
+        </CaseStudyIdContext>
       </GlassCard>
 
       <footer className="case-study__footer">
