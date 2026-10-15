@@ -5,7 +5,7 @@ import { contactLinks, cv } from '../data/cv';
 export function CV() {
   return (
     <GlassCard as="section" id="cv" className="section cv">
-      <h2>CV</h2>
+      <h2>Curriculum Vitae</h2>
 
       <div className="cv__groups">
         {cv.map((group) => (
@@ -34,6 +34,13 @@ export function CV() {
           </li>
         ))}
       </ul>
+
+      <p className="cv__credit">
+        Header typeface: Patriot by Hoàng Lê, via{' '}
+        <a href="https://republi.sh/" target="_blank" rel="noopener noreferrer">
+          Republish
+        </a>
+      </p>
     </GlassCard>
   );
 }

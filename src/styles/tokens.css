@@ -6,6 +6,65 @@
  * not confirmed against the physical notebook or a swatch (see
  * docs/SPEC.md → Open design decisions). Swap them in here only.
  */
+
+/*
+ * Patriot — header/display typeface by Hoàng Lê, via Republish (republi.sh);
+ * credited in the CV section. Self-hosted, one file per weight. It covers
+ * Vietnamese (Đ U+0110, ạ, ê…) but not the lookalike Ð U+00D0 (Icelandic
+ * eth), so always type the name with U+0110. Patriot is unicase: lowercase
+ * letters draw as capitals. Normal sits between Light and Regular in the
+ * files themselves (both Regular and Normal report 400), so it's mapped to 350.
+ */
+@font-face {
+  font-family: 'Patriot';
+  src: url('../assets/fonts/patriot/Patriot-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Patriot';
+  src: url('../assets/fonts/patriot/Patriot-Normal.woff2') format('woff2');
+  font-weight: 350;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Patriot';
+  src: url('../assets/fonts/patriot/Patriot-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Patriot';
+  src: url('../assets/fonts/patriot/Patriot-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Patriot';
+  src: url('../assets/fonts/patriot/Patriot-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Patriot';
+  src: url('../assets/fonts/patriot/Patriot-UltraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Patriot';
+  src: url('../assets/fonts/patriot/Patriot-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* Palette — light theme (default) */
   --color-paper: #faf8f3; /* TODO(palette): paper white */
@@ -17,6 +76,21 @@
   /* Same hue as --color-yellow, darkened until white text on it passes WCAG AA
      (4.54:1). Only for surfaces carrying white text — --color-yellow fails (2.05:1). */
   --color-yellow-deep: #996f00;
+  /* "Under construction" caution tape (card ribbon, case study banner).
+     Fixed in both themes, like real tape; ink on yellow is ~9:1. */
+  --caution-yellow: #eaaa00;
+  --caution-black: #1d1c1a;
+  --caution-stripes: repeating-linear-gradient(
+    -45deg,
+    var(--caution-black) 0 6px,
+    var(--caution-yellow) 6px 12px
+  );
+  /* Border ring around the hero portrait blob */
+  --hero-blob-border: var(--color-blue);
+  /* Sticky-note paper for margin annotations (e.g. ThemeComparison).
+     Stays light in both themes, so its ink is fixed dark. */
+  --color-note: #fbe7a1; /* TODO(palette) */
+  --color-note-ink: #1d1c1a;
 
   /* Dot-grid background — Bauhaus red, faded so body text reads cleanly over it.
      TODO(palette): opacity tuned by eye, not a confirmed value. */
@@ -33,6 +107,10 @@
   --glass-blur: 12px;
 
   /* Typography */
+  /* Patriot only for page titles (h1: hero name, case study titles);
+     Unbounded for h2 onwards and other display text. To drop Patriot,
+     point --font-title at var(--font-display). */
+  --font-title: 'Patriot', system-ui, sans-serif;
   --font-display: 'Unbounded', system-ui, sans-serif;
   --font-body: 'Sora', system-ui, sans-serif;
 
@@ -44,14 +122,43 @@
   --space-5: 40px;
   --space-6: 64px;
 
+  /* Content rhythm — Apple-style (apple.com / HIG). Body copy is 17px on a
+     25px line. Text spacing is in em so it scales with the text it follows;
+     block spacing is in px on the 8pt grid and steps down at Apple's
+     breakpoints (≤1068px, ≤734px) below. */
+  --body-size: 1.0625rem; /* 17px */
+  --body-leading: 1.47059; /* 25px at 17px */
+  --flow-tight: 0.4em; /* list item → list item, media → caption */
+  --flow-text: 0.8em; /* paragraph → paragraph, heading → its text */
+  --flow-block: 48px; /* prose ↔ figure / embed / quote / split; h3 above */
+  --flow-section: 80px; /* case study h2 (sub-section) above */
+  --flow-page: 96px; /* one-pager section → section */
+
   --radius-card: 20px;
   --wide-width: 1200px; /* page content width */
+  --outline-width: 240px; /* case study outline panel, docked on the right */
 
   /* Left-edge nav tabs; the gutter fits a fully extended (active) tab */
   --nav-tab-width: 32px;
   --nav-gutter: calc(var(--nav-tab-width) + var(--space-3));
 
   color-scheme: light;
+}
+
+@media (max-width: 1068px) {
+  :root {
+    --flow-block: 40px;
+    --flow-section: 64px;
+    --flow-page: 80px;
+  }
+}
+
+@media (max-width: 734px) {
+  :root {
+    --flow-block: 32px;
+    --flow-section: 48px;
+    --flow-page: 64px;
+  }
 }
 
 @media (max-width: 639px) {
@@ -68,6 +175,8 @@
   --color-red: #e5545a; /* TODO(palette): lifted for contrast on navy */
   --color-blue: #7fa6e8; /* TODO(palette) */
   --color-yellow: #f2c230; /* TODO(palette) */
+  --hero-blob-border: var(--color-yellow);
+  --color-note: #ecd27a; /* TODO(palette): dimmed so it doesn't glare on navy */
 
   /* Dimmed/desaturated red so the grid recedes behind content */
   --dot-color: rgba(176, 96, 100, 0.35); /* TODO(palette) */

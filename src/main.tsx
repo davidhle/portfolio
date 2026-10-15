@@ -3,9 +3,12 @@ import { createRoot } from 'react-dom/client'
 import './styles/tokens.css'
 import './styles/global.css'
 import App from './App.tsx'
+import { initialRouteReady } from './router.ts'
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
+initialRouteReady.then(() =>
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <App />
+    </StrictMode>,
+  ),
 )

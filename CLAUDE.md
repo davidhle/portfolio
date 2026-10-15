@@ -26,43 +26,45 @@ handling) from an earlier commit or conversation.
 
 ## Current status
 
-Milestone 1 (static one-page shell) shipped. Working through a round of
-polish plus pulled-forward Milestone 3 work:
-- Light-mode dot-grid opacity needs lowering (text legibility).
-- Body font changed from Inter to Sora.
-- Work section expanded to 4 project cards (ChoreoMapper, Dabble, A Robot,
-  Hey Siri) with responsive grid layout (not a carousel — see
-  `docs/SPEC.md` → Work section layout).
-- Nav rebuilt as fixed left-edge sticky-note tabs (shipped); Work tab's
-  text needs to be white, darkening the yellow token if contrast requires
-  it (see `docs/SPEC.md` → Accessibility note — nav contrast).
-- All sections need one consistent left alignment, matching Work's (see
-  `docs/SPEC.md` → Layout).
-- Contact section renamed to CV, with real education/career copy and
-  LinkedIn/GitHub icons at the bottom (see `docs/SPEC.md` → CV content).
-- Hero needs a placeholder portrait image, organic horizontal-oblong shape,
-  to the right of the hero text.
-- ChoreoMapper and Hey Siri copy is ready to port into a new case-study
-  page template (text only for now); in-case-study outline/TOC nav is new
-  scope — see `docs/SPEC.md` → Navigation and → Milestone 3.
+**Milestone 1 is fully shipped and live at ledavid.me** (Cloudflare
+Workers, deployed via Workers Builds from `main`). Includes the full
+one-page shell, left-edge sticky-note nav, 4-card Work grid, CV section
+with real content, dark/light toggle, and dot-grid theming.
+
+**Milestone 3 (case studies + page-turn transition) is underway.**
+ChoreoMapper and Hey Siri case study pages are both built (branch
+`milestone-3-case-studies`), with the outline/TOC nav, prev/next navigation
+between them, and Figma-embed fixes. A Robot and Dabble have pages that are
+linked but marked `status: "under-construction"` (card ribbon + page
+banner) until David finalizes them. ChoreoMapper is also marked
+under construction while David reorders it (final prototype first). A Work card links to its case study
+once `src/content/case-studies/<project id>.mdx` exists; that case study's
+images live in `src/content/case-studies/assets/<project id>/` and MDX `src`
+values are filenames relative to it. See `docs/SPEC.md` → Vision → "Source
+content to port" for each file's status.
+Milestone 2 (real About copy, static stickers, confirmed palette hex
+values) is intentionally deferred since it doesn't block Milestone 3 — see
+`docs/SPEC.md` → Roadmap for the full breakdown.
+
 Update this section as these land.
 
 ## Deployment
 
-Cloudflare Pages, connected to this repo for continuous deployment on push
-to `main`. Build command `npm run build`, output dir `dist`. Domain:
-ledavid.me (already on Cloudflare — see `docs/SPEC.md` → Tech stack
-decisions → Deployment for why). SPA fallback comes from the committed
-`wrangler.jsonc` (`not_found_handling: "single-page-application"`) — do not
-add a `_redirects` file; it conflicts and causes an "infinite loop" deploy
-error.
+Cloudflare Workers (static assets, via Workers Builds — not classic Pages),
+connected to this repo for continuous deployment on push to `main`. Build
+command `npm run build`, output dir `dist`, deploy command
+`npx wrangler deploy`. Domain: ledavid.me (already on Cloudflare).
+SPA fallback is handled by `not_found_handling: single-page-application`
+in `wrangler.jsonc` — **no `_redirects` file**, it causes a redirect-loop
+deploy failure. See `docs/SPEC.md` → Tech stack decisions → Deployment.
 
 ## Stack quick-reference
 
 - Vite + React + TypeScript
 - Standard CSS Grid/Flexbox layout, anchor-link nav, smooth scroll — no
   pan/zoom library
-- Fonts: **Unbounded** (headers/display, Google Fonts) + **Sora** (body,
+- Fonts: **Patriot** (h1 titles only, self-hosted, on trial) + **Unbounded**
+  (h2 onwards and other display text, Google Fonts) + **Sora** (body,
   Google Fonts) — see `docs/SPEC.md` → Typography
 - Theming: CSS custom properties + `data-theme` attribute, default from
   `prefers-color-scheme`, persisted via `localStorage`

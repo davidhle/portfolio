@@ -36,16 +36,18 @@ card treatment that softens the dot grid behind it so the grid reads as
 texture rather than noise, without hiding the content.
 
 **Sections (page order):**
-- **Hero/intro** — "Hi, my name is David," name rendered in a Vietnamese-
-  calligraphy-inspired flowing style (planned as a custom illustrated PNG,
-  not a web font), and a byline ("M.Sc. HCI Graduate based in Berlin,
+- **Hero/intro** — "Hi, my name is" greeting, the name as a looping
+  typewriter animation between "David Lê" and "Đạt Lê" (see "Hero name
+  animation" below), and a byline ("M.Sc. HCI Graduate based in Berlin,
   Germany" — placeholder, may change). No project cards in the hero itself
   (superseded — see "Open design decisions"); the hero's job is the intro,
-  Work is where all projects live. A placeholder portrait sits to the right
-  of the hero text, inside an organic horizontal-oblong shape (an
-  asymmetric, flowing blob outline — not a simple ellipse/circle — per
-  David's reference image; a CSS `border-radius` blob or SVG `clip-path`
-  both work, precision isn't critical for the placeholder).
+  Work is where all projects live. A real portrait (`david-landing.jpg`,
+  added to the repo under `/content/` 2026-10-13 — no longer a placeholder)
+  sits to the right of the hero text, inside an organic horizontal-oblong
+  shape (an asymmetric, flowing blob outline — not a simple ellipse/circle
+  — per David's reference image; a CSS `border-radius` blob or SVG
+  `clip-path` both work). The blob frame is sized **25% larger** than the
+  first build's placeholder version.
 - **About**
 - **Work** — the project grid: four cards today (ChoreoMapper, Dabble,
   A Robot, Hey Siri), each leading into its own case study via the
@@ -74,14 +76,84 @@ and lists that case study's own sections/headings for quick in-page
 jumping. See "Navigation" below.
 
 **Source content to port:**
-- ChoreoMapper — copy finalized, ready to port now (text only; the source
-  page has images/other media to bring over later):
-  https://ledavid.framer.website/work/choreomapper
-- Hey Siri — copy finalized, ready to port now (text only for now):
+- ChoreoMapper — final copy delivered 2026-10-12 as
+  `src/content/case-studies/choreomapper.mdx` (see Architecture →
+  Case study content as MDX). Includes working embeds (2 Figma prototypes,
+  a YouTube video, a Notion page) — photos are still placeholders pending
+  the actual image files, but this is no longer "text only," embeds are in
+  scope now. Original source: https://ledavid.framer.website/work/choreomapper
+  *Restructure planned (2026-10-15), marked `status: "under-construction"`
+  meanwhile:* David will lead with the final prototype iteration, then walk
+  through how it got there, then the evaluation's results and insights —
+  highlighting the takeaways that went on to inform some of Dabble's design
+  choices.
+- Hey Siri — final copy delivered 2026-10-12 as
+  `src/content/case-studies/hey-siri.mdx` (see Architecture →
+  Case study content as MDX). Includes 8 real participant-response card
+  images (not placeholders — see `ParticipantResponseCarousel` below) plus
+  2 still-placeholder image spots (the 16-page probe booklet, and the
+  final probe-design photo). Original source:
   https://ledavid.framer.website/work/voice
-- Dabble (live app) — copy status not yet confirmed:
+- Dabble — MDX written as `src/content/case-studies/dabble.mdx` (first
+  drafted 2026-10-13 from the app's own Home/About copy, since expanded by
+  David). Its card is live in the Work grid, with light/dark thumbnails
+  that invert the portfolio's theme (`cover` in `src/data/projects.ts`).
+  The hero spot at the top is one live `<LiveAppEmbed>` of the deployed
+  app (opening on the Constellation view), with a sticky note pointing at
+  the app's own view switcher (Constellation / Linear Timeline / Spiral
+  Timeline) — confirmed 2026-10-13 that GitHub Pages sends no
+  X-Frame-Options/CSP header and that the views render inside an iframe.
+  (Until 2026-10-15 there was one embed per view under "Three Views of One
+  Practice"; consolidated into the hero since the app switches views
+  itself, so those subsections are text-only now.) The other image spots are still placeholders. Live app:
   https://davidhle.github.io/dabble
-- A Robot — copy status not yet confirmed, no source link given yet.
+- A Robot — first-draft copy delivered 2026-10-13 as
+  `src/content/case-studies/arobot.mdx` (see Architecture → Case study
+  content as MDX), drafted from the final presentation PDF and the summary
+  site. Confirmed metadata: tags Speculative Design, Design Futures,
+  Augmented Reality, Design Thinking, Gamification; location Vienna,
+  Austria (Seestadt Aspern); year 2022; affiliation Technische Universität
+  Wien (Erasmus semester). The first team project among the case studies —
+  credits Mira Thieme and Lily Hecke via the `collaborators` frontmatter
+  field. Includes real images (the hero/cover, the storyboard, the
+  design-workshop whiteboard sketch, and two Seestadt field-trip photos in
+  an `ImageSlideshow`)
+  plus one still-placeholder spot (the cardboard prototype). The
+  research-question blockquote is a proposed framing, not from the source
+  materials — confirm it before publishing. Original source:
+  https://thedavidle.wixsite.com/home/arobot
+
+### Hero name animation
+
+The hero name alternates between "David Lê" and "Đạt Lê" (David's
+Vietnamese given name) as a looping per-letter typewriter reveal: type one
+name out with a blinking cursor, pause, clear it, type the other, pause,
+repeat. Built 2026-10-13 as `src/components/TypewriterName.tsx`, set in the
+title font (Patriot — see Typography); it backspaces to clear
+rather than crossfading, and the timings are constants at the top of the
+file.
+
+- **Not true handwriting animation.** Per-stroke "being written" animation
+  would need hand-traced SVG stroke paths for both names — a font's glyphs
+  are filled outlines, not pen-stroke paths, so they can't be drawn on
+  stroke by stroke. That path art doesn't exist yet; it's a possible future
+  upgrade, not current scope. Don't fake it by over-animating the
+  typewriter.
+- **Reduced motion:** with `prefers-reduced-motion: reduce`, it shows
+  "David Lê" statically, with no loop and no cursor.
+- **Screen readers** get both names once ("David Lê, also Đạt Lê", the
+  Vietnamese marked `lang="vi"`), not every keystroke.
+- **Layout:** both full names sit invisibly underneath the typed text, so
+  the longer one's size is always reserved and typing never reflows the
+  hero. The name is sized to its text column (container query units) so
+  "David Lê" always fits on one line, with extra space below for the dot
+  under ạ, which hangs well below the baseline.
+- **Use Đ U+0110** (Vietnamese D with stroke), not the lookalike Ð U+00D0
+  (Icelandic eth): Patriot has the former but not the latter, so U+00D0
+  silently falls back to a system font.
+
+Replaces the earlier plan for a custom illustrated PNG of the name — see
+Superseded decisions.
 
 ### Navigation
 
@@ -99,6 +171,23 @@ navigator), letting the reader jump within the case study rather than
 scrolling through it linearly. This outline is specific to the case study
 view and goes away when the reader returns to the one-pager.
 
+### Case study page chrome
+
+- **Outline/TOC nav sits on the right**, not the left (first build had it on
+  the left, stacked under the main nav — moved per feedback on the first
+  real case study). It has a collapse/expand toggle — a directional arrow
+  icon (`→` to collapse/slide the panel out, `←` to expand/bring it back),
+  not a `<`/`>` chevron-button pair — that slides it fully off-screen to
+  the right when collapsed. When collapsed, the case-study content column
+  resizes to match the same width/left-alignment the home page's sections
+  use (see Layout above), so the page-turn transition between home and a
+  case study reads as seamless rather than a layout jump.
+- **Previous/next case study navigation**, alongside "← Back to Work" —
+  lets a reader page through case studies sequentially. With only
+  ChoreoMapper live so far, there's nothing to page to yet; build the
+  mechanism now (ordered by the Work section's card order) so it
+  activates naturally as Hey Siri, Dabble, and A Robot get real pages.
+
 ### Work section layout
 
 Four project cards today (ChoreoMapper, Dabble, A Robot, Hey Siri), laid
@@ -108,6 +197,16 @@ out as a responsive grid, not a carousel:
 - Narrow/mobile: a single column, one card per row (4 rows of 1).
 - Side padding sized so the breakpoint above actually fits 4 cards in one
   row at typical desktop widths, rather than wrapping prematurely.
+- **Each card shows its tags** (the same tag list from that case study's MDX
+  frontmatter, e.g. ChoreoMapper's Design Research / Design Methods /
+  Participatory Design / Prototyping) — small labels/chips on the card
+  itself, not just visible after opening the case study, so a visitor can
+  gauge a project's focus at a glance from the grid.
+- **Each card's thumbnail image comes from that case study's `coverImage`
+  frontmatter field** (new — see Architecture → Case study content as
+  MDX). Hey Siri's is a real photo now (added directly to the repo,
+  2026-10-12); ChoreoMapper's isn't set yet, so its card can fall back to
+  a placeholder/pattern treatment until one is chosen.
 
 **Why a grid over a carousel:** with a small, fixed number of items (4),
 a grid keeps every project visible without requiring an interaction, which
@@ -186,6 +285,22 @@ direction is dropped in favor of the one-page layout above — noted here so
 a Claude Code session doesn't resurrect canvas-engine code from an earlier
 commit or conversation.
 
+The hero name was planned as a custom illustrated PNG in a Vietnamese-
+calligraphy-inspired style. Dropped 2026-10-13 for the typewriter animation
+(see "Hero name animation" above): a static image can't be typed out
+letter by letter. The "David Lê" signature sticker that returns from a case
+study was meant to share that PNG's style; it's live text in the display
+font for now.
+
+## Known bugs
+
+- **Dark-mode theme-toggle icon** on the case study page falls back to a
+  missing-glyph box (square with a question mark) instead of the moon
+  icon that renders correctly on the home page — icon reference/import is
+  broken specifically in that view.
+- **Home button (the "David Lê" signature pill) has a stray white border**
+  in both themes — remove it; doesn't match the rest of the chrome.
+
 ## Open design decisions
 
 Flagging these rather than silently picking one, since they shape layout
@@ -198,9 +313,9 @@ work directly:
   and cover.
 - **Light-mode dot-grid opacity** needs a specific value — see Architecture
   above.
-- **Copy status for Dabble and A Robot** isn't confirmed (ChoreoMapper and
-  Hey Siri are ready — see Vision → Source content to port). A Robot also
-  has no source link yet.
+- **A Robot's copy** is a first draft pending David's proofread and the
+  proposed research question (ChoreoMapper, Hey Siri and Dabble are
+  written — see Vision → Source content to port).
 - **Sticky-note nav visual details** (exact shape/texture of the tabs,
   spacing, active-state styling) aren't specified beyond the "annotation
   tab on a book/journal edge" direction in Navigation above — there's room
@@ -215,9 +330,51 @@ work directly:
 the reference image's "CANCER" wordmark (that image was used only for its
 font style — its moondust/daybreak/pebble/seaglass/harbor-night color
 palette is not part of this project's palette). Use Unbounded for section
-headers (About, Work, Contact), the nav, and any display-scale type; the
-"David"/"David Lê" name treatment stays a custom illustrated PNG, not a web
-font, so Unbounded doesn't need to carry that part.
+headers (About, Work, Contact), the nav, and any display-scale type,
+including the hero name animation (see Vision → Hero name animation).
+
+**Testing: Patriot** *(trialed as the whole display font on 2026-10-13;
+narrowed on 2026-10-15 to page titles only — the `h1`s, i.e. the hero name
+and case study titles — because it was too much at smaller header sizes.
+Unbounded is back for h2 onwards, the nav, and all other display text)*. Self-hosted, not from Google
+Fonts. Designed by Hoàng Lê and released through Republish (republi.sh), a
+non-profit project of Behalf Studio. Inspired by the hand-lettering on a
+historic songbook cover archived in the Hồ Chí Minh Museum. A bold,
+geometric display sans with uniform weight — in the foundry's words, "no
+flourishes nor distinctions between thick and thin lines." It's also
+unicase: lowercase letters draw as capitals, so all headers read in caps.
+Weights: Light, Regular, Normal, Medium, Bold, UltraBold, Black (Normal is
+lighter than Regular; see Architecture → Self-hosted fonts). The foundry
+lists "Basic Latin & Vietnamese" as its supported languages.
+
+Caveats:
+- **License.** The republi.sh page doesn't publish license terms, and the
+  downloaded package (`Patriot-v1.0`) has no license file. What it does
+  have: `Documentation/contribute-support.pdf` says "The typefaces in
+  Republish are open-source, which means they are free to be used for
+  commercials and personal projects … Please remember to credit us
+  whenever & wherever possible." The font files' own metadata says only
+  "Copyright © 2020 by Behalf Studio. All rights reserved." with no
+  license fields. Fine for this personal portfolio with credit given; for
+  anything beyond that, confirm terms with the foundry
+  (republish@onbehalfof.studio).
+- **Vietnamese coverage** — confirmed 2026-10-13: Đ/đ (U+0110/U+0111) and
+  ạ (U+1EA1) are in all seven weights and render in the webfont in the
+  browser, with no system-font fallback. The lookalike Ð U+00D0 is *not* in
+  the font; always type the name with U+0110.
+- **Not handwriting.** Being bold, geometric and uniform-weight, it won't
+  read as flowing handwriting when animated. It fits section headers and
+  the nav (same poster-like family as Unbounded); David has seen it on the
+  hero name animation and is happy with it (2026-10-13), but it's still on
+  trial overall.
+- **Credit** — done: the CV section shows "Header typeface: Patriot by
+  Hoàng Lê, via Republish" under the contact links, linking to
+  https://republi.sh/. Keep it as long as Patriot is in use.
+
+Two tokens in `src/styles/tokens.css`: `--font-title` (Patriot, used only
+by the `h1` rule in `global.css`) and `--font-display` (Unbounded,
+everything else). To drop Patriot entirely, point `--font-title` at
+`var(--font-display)`.
 
 **Body font: Sora** (Google Fonts, free, variable weight) — David's pick
 over the earlier Inter suggestion, to pair with Unbounded. Sora is a
@@ -229,8 +386,27 @@ in a header or body copy, double-check Sora's and Unbounded's accented-
 character glyph coverage before relying on either — this wasn't confirmed
 and a fallback stack may be needed for full diacritic support.
 
-Both are free, self-hostable, and available via Google Fonts — no licensing
-decision needed.
+Unbounded and Sora are both free and available via Google Fonts — no
+licensing decision needed (Patriot's caveats are above).
+
+### Spacing (content rhythm)
+
+Apple-style (apple.com / HIG), added 2026-10-15. Body copy is 17px on a
+25px line (`--body-size`, `--body-leading`). Text spacing is in `em` so it
+scales with the text: `--flow-text` (0.8em — paragraph → paragraph,
+heading → its text) and `--flow-tight` (0.4em — prose list items). Text
+blocks get space only below; figures, embeds, quotes and splits carry
+`--flow-block` margins that collapse with it. Block spacing is px on the
+8pt grid and steps down at Apple's breakpoints:
+
+| Token            | >1068px | ≤1068px | ≤734px | Used for                          |
+| ---------------- | ------- | ------- | ------ | --------------------------------- |
+| `--flow-block`   | 48      | 40      | 32     | media/quotes/splits, h3 above     |
+| `--flow-section` | 80      | 64      | 48     | case study h2 above               |
+| `--flow-page`    | 96      | 80      | 64     | one-pager section gap, page top   |
+
+The `--space-1…6` steps (4/8/16/24/40/64) stay for component internals
+(padding, gaps inside cards, nav, controls).
 
 ## Tech stack decisions
 
@@ -259,17 +435,20 @@ decision needed.
   full page-curl physics as a later polish pass.
 - **Framer Motion** for supporting UI animation (scroll-reveal, hover
   states) as needed.
-- **Deployment: Cloudflare Pages**, connected to the `portfolio` GitHub
-  repo for continuous deployment (auto-build on every push to `main`).
-  Chosen over GitHub Pages/Vercel because the domain (`ledavid.me`) is
-  already on Cloudflare — Pages can attach it with auto-managed DNS and
-  free SSL, no cross-service DNS configuration needed. Build command
-  `npm run build` (Vite default), output directory `dist`. SPA fallback
-  routing (so direct links to case-study routes like `/work/choreomapper`
-  don't 404 on refresh) is handled by the committed `wrangler.jsonc`
-  (`assets.not_found_handling: "single-page-application"`). Don't add a
-  `_redirects` file — it conflicts with that setting and fails the deploy
-  with an "infinite loop detected" error.
+- **Deployment: Cloudflare Workers (static assets)**, connected to the
+  `portfolio` GitHub repo via Workers Builds for continuous deployment
+  (auto-build + `wrangler deploy` on every push to `main`). Chosen over
+  GitHub Pages/Vercel because the domain (`ledavid.me`) is already on
+  Cloudflare. Note this is the modern Workers-assets path, not classic
+  Cloudflare Pages — Cloudflare's current default for a new Git-connected
+  project. Build command `npm run build` (Vite default), output directory
+  `dist`, deploy command `npx wrangler deploy`. SPA fallback routing (so
+  direct links to case-study routes like `/work/choreomapper` don't 404)
+  is handled automatically via `"assets": { "not_found_handling":
+  "single-page-application" }` in the auto-generated `wrangler.jsonc` —
+  **do not add a `public/_redirects` file**, it conflicts with that
+  setting and causes a redirect-loop deploy failure (hit and fixed on
+  2026-10-12).
 
 ## Architecture
 
@@ -288,10 +467,187 @@ decision needed.
   mode already uses a dimmed/desaturated variant so it recedes rather than
   fighting the content; re-check it once light mode's opacity is fixed, in
   case the two need different treatment.
-- **Case study content** (ChoreoMapper, Dabble) as structured MDX/JSON, kept
-  separate from layout/presentation components.
+- **Self-hosted fonts.** Patriot is the project's first self-hosted
+  typeface (Unbounded and Sora come from Google Fonts via `index.html`).
+  Files live at `src/assets/fonts/patriot/`, one per weight, `.woff2`
+  preferred. Each weight gets its own `@font-face` rule at the top of
+  `src/styles/tokens.css`, next to the `--font-title`/`--font-display`/`--font-body`
+  tokens. Map weights from each file's actual weight, not its name:
+  Patriot's Regular and Normal both claim 400, but Normal is visibly
+  lighter, so it's declared at 350.
+- **Case study content as MDX** (decided — not JSON): real content turned
+  out to interleave prose, headings, bullet lists, and media (photos,
+  Figma embeds, a YouTube video, a Notion embed) at specific points within
+  the flow, which MDX expresses naturally and a block-schema JSON would
+  just end up reinventing. One `.mdx` file per case study (e.g.
+  `src/content/case-studies/choreomapper.mdx`), frontmatter for page
+  metadata (title, subtitle, tags, `collaborators`, affiliations,
+  location, year, and `coverImage` — a path to an asset under that case study's own assets
+  folder, used as the Work-grid card thumbnail; optional, a case study
+  without one yet falls back to a placeholder/pattern card). For team
+  projects, `collaborators` is a list of teammates' names (e.g.
+  `collaborators: [Mira Thieme, Lily Hecke]`, first used for A Robot);
+  the case study header shows them as a "Collaborators" detail, before
+  Affiliations. Leave it out for solo work rather than listing David
+  alone, and still name the teammates once in the opening paragraph so the
+  credit reads in the prose too. `status` marks how finished a case
+  study is: `"published"` (the default when omitted — Hey Siri leaves
+  it out) or `"under-construction"` (real copy and media,
+  but not final). Under construction, the Work card gets a diagonal
+  black/yellow caution-tape ribbon across its top-right corner, and the
+  case study page gets a matching banner below the title/metadata ("Under
+  construction — this case study is still being finalized, so its content
+  may change"), for visitors who land on the URL directly. Both are
+  heads-ups only: the card stays fully linked and in the prev/next
+  sequence. The caution colors are their own tokens (`--caution-yellow`,
+  `--caution-black`, `--caution-stripes` in `tokens.css`), fixed in both
+  themes like real tape. Dabble and A Robot currently use
+  `"under-construction"` (since 2026-10-13), and ChoreoMapper too (since
+  2026-10-15, while David reorders it — see Source content to port); drop
+  the line once each is final. This is separate from `comingSoon` in `src/data/projects.ts`,
+  which means a project has no page at all (muted, inert card with a
+  "Coming soon" pill) — don't conflate the two states or their styling.
+  Body
+  content as markdown + a small shared component vocabulary:
+  `<ImagePlaceholder label count />` (photos not yet supplied — renders a
+  placeholder box), `<VideoEmbed src label />`, `<FigmaEmbed src label />`,
+  `<NotionEmbed src label />` (Figma embed URLs should use `scaling=
+  fit-width`, not the default `scale-down` — the latter letterboxes the
+  prototype inside its frame instead of filling the available width,
+  which was a problem on the first real embed; try `scale-down-width` as
+  a fallback if `fit-width` crops awkwardly for a given prototype. Also
+  give the `FigmaEmbed` component's `<iframe>` enough height to show the
+  prototype's full height, not just its width — the current fixed/short
+  iframe height crops the bottom of the prototype regardless of the
+  `scaling` value. The black bars are top/bottom only, not left/right —
+  confirmed on the "Timeline prototype" embed after the first attempt at
+  this fix — which means the container's aspect ratio is still too tall
+  for the actual frame; a generic default ratio (the earlier "3:4 if not
+  given" guess) isn't good enough. **All three ChoreoMapper Figma frames
+  are confirmed 1440×1024px** — set `<FigmaEmbed>`'s container to
+  `aspect-ratio: 1440 / 1024` (≈ 1.40625) for all three embeds in
+  `choreomapper.mdx`, rather than any guessed/default ratio, so the
+  container's shape matches the prototypes exactly and there's no leftover
+  space on any side for black bars to appear in. Keep `frameWidth`/
+  `frameHeight` as props on `<FigmaEmbed>` (defaulting to 1440/1024) so a
+  future case study's embeds — which will likely use different frame
+  dimensions — can override them per instance. Where a sliver is still
+  unavoidable, set that container's background to match the page's
+  glass-card/theme background instead of plain black, so it blends in),
+  `<LiveAppEmbed src label note? />` (new 2026-10-13, used for Dabble's
+  hero — a live, interactive iframe of a deployed web app, e.g.
+  `https://davidhle.github.io/dabble/#/spiral`. Lazy-loaded, with `label`
+  as the iframe's `title` and caption, plus an "Open in new tab ↗" link in
+  the caption as a fallback and for full-size use. Since it's a
+  responsive app rather than a fixed design frame, the frame is a fixed
+  height, `clamp(480px, 75vh, 760px)`, not an aspect ratio. Optional
+  `note` (text/JSX) renders a taped-on yellow sticky note overlapping the
+  frame's top edge — for pointing visitors at the app's own controls; keep
+  it short so it doesn't cover them. Before using
+  it on a new site, check that the site doesn't send `X-Frame-Options` or
+  a CSP `frame-ancestors` that blocks embedding; if it does, use
+  screenshots instead of shipping a broken embed),
+  `<ThemeComparison previous updated />`
+  (a before/after theme-list card, first used for ChoreoMapper's interview
+  section — reusable wherever a similar comparison comes up), and
+  `<ParticipantResponseCarousel label items />` (new, first used in
+  Hey Siri's Key Findings section — `items` is an array of `{ src, alt }`
+  pairs pointing at real image assets, not placeholders; renders as a
+  horizontally scrollable row of cards, matching the source Framer
+  carousel's behavior: auto-scrolls, and pauses on hover/pointer-over so a
+  reader can actually read a card. Image assets for a given case study
+  live at `src/content/case-studies/assets/<case-study-slug>/`, e.g.
+  `src/content/case-studies/assets/hey-siri/participant-2-sex-question.png`
+  — `src` values in `items` are filenames relative to that folder), and
+  `<ImageSlideshow label items />` (new — same `items` shape as
+  `ParticipantResponseCarousel`, but a different interaction pattern:
+  one image visible at a time, with prev/next arrow buttons and a dot
+  pagination indicator below, matching the reference Framer carousel
+  used for the Hey Siri cultural-probe booklet's 16 pages — not
+  auto-scrolling, reader-driven instead), `<MediaSplit side image alt
+  placeholderLabel>` (new — wraps a block of prose as its children and
+  lays it out in two columns against an image: text on one side, image on
+  the other (`side="left" | "right"` picks which), collapsing to a single
+  stacked column on narrow viewports. Pass `image` for a real asset path,
+  or `placeholderLabel` to render an `ImagePlaceholder` in that slot
+  instead when there's no real photo yet. `side` names the image's side;
+  `alt` and `label` (caption) describe the image. Layout (2026-10-13):
+  columns are top-aligned (`align-items: start`), and in the two-column
+  layout the text sets the row height — the image fills that height with
+  `object-fit: cover` (never below 200px) rather than a tall photo
+  stretching the row past a short text block; stacked, the image keeps its
+  natural proportions. In ChoreoMapper it's used twice:
+  pairing a real photo (with caption, "Me competing at a shuffle dance
+  tournament") against the section's opening research-question blockquote
+  in "Project Context & Personal Motivation" (`side="right"`) — moved
+  here from the shorter Personal Motivation subsection text after that
+  pairing read as unbalanced (too much empty space below the short
+  paragraph, next to the taller portrait photo; the quote block's own
+  padding/accent bar gives it more visual weight to pair against) — and
+  the Interview Setup photo under Semi-Structured Interviews (`side=
+  "right"`, still a placeholder, replacing the plain `<ImagePlaceholder
+  label="Interview setup" />` block that was there before). General
+  guidance for this component: top-align the two columns (`align-items:
+  start`) rather than centering, so if one side is taller, the extra
+  space reads as a natural trailing gap rather than an awkward
+  imbalance — and if a future pairing still looks off, prefer capping the
+  image's height to roughly match its paired text (via `object-fit:
+  cover`) over leaving a tall image stretching the row.
+- **Hero portrait fine positioning:** the photo's crop/position within the
+  blob frame should leave a small gap between the top of David's head and
+  the blob's top edge (~10px) rather than sitting flush against it —
+  nudge via `object-position` or a small `transform: translateY(...)` on
+  the image inside the clipped frame, whichever fits how the frame's
+  already built.
+- `<ZoomableImage src alt placeholderLabel />` (new — opens a
+  pan-and-zoom lightbox on click/tap, for an image with enough fine detail
+  that it needs to be explored rather than just viewed larger, the way
+  you'd zoom into a Miro board itself. First use: an affinity-mapping/
+  Miro-board image under ChoreoMapper's Key Insights subsection — the
+  interview coding step described in that text doesn't have an image yet,
+  so this is currently a placeholder (`placeholderLabel="Affinity mapping
+  (Miro board)"`) until the real board screenshot is supplied; confirm
+  that's the intended spot for it before building further case studies'
+  equivalent images on this pattern). Needs an MDX integration for Vite
+  (e.g. `@mdx-js/rollup`) if not already set up.
+  `##`/`###` headings in the MDX double as the source for the in-case-study
+  outline/TOC nav (see Navigation) — keep heading structure clean and
+  consistent for that reason, independent of visual styling.
 - **Stickers** share a common wrapper component (tilt, shadow, washi-tape
   styling) and differ only in content/data.
+  - **Built (2026-10-15)** as `src/components/Sticker.tsx` + `Sticker.css`:
+    - `Sticker` — the wrapper. Tilt (`rotate` in degrees), a white die-cut
+      border (paper white in both themes, like a real sticker), and a
+      `drop-shadow` filter on the wrapper so the shadow follows the
+      outline. Optional `shape` clips it to one of three organic blob
+      outlines (`blob-a` is the hero portrait's pebble; `blob-b`, `blob-c`
+      are variants), defined once as SVG `clipPath`s by `StickerDefs`
+      (rendered in `App.tsx`). With `onToggle` it's a button that lifts to
+      the foreground: higher z-index, scaled up 8%, rotation eased to a
+      quarter, deeper shadow. Lift triggers on hover (only on
+      `(hover: hover)` devices), keyboard focus, or tap/Enter toggling
+      `raised`. No idle animation; transitions are dropped under
+      `prefers-reduced-motion`. Washi tape isn't built yet.
+    - `StickerScatter` — a zigzag row of photo stickers (every second one
+      drops lower; wraps to two-up on phones). One photo at a time can be
+      tapped forward; tapping it again or anywhere else puts it back.
+      Images are `loading="lazy"` with their aspect ratio reserved.
+  - **First use: About section photo scatter.** Five photos (portrait on a
+    terrace, pole, beach portrait, slab boulder at Bahratal, the Bauhaus
+    University staircase), blob-framed with the three outlines rotated
+    through them, come to the foreground on hover/tap. This replaced the
+    single pole photo in a `MediaSplit`. From 1024px they fill a right
+    column beside the text (3fr text / 2fr photos), zigzagging top to
+    bottom and stretched to the text's height (overlap is fine — the
+    hover/tap lift is how you see one whole), via `StickerScatter free` and
+    each photo's `place`. Below 1024px they drop to the zigzag row under
+    the text. Web-sized copies (≤1000px long edge; the beach portrait
+    cropped to mostly David) live in `src/content/about/`; the originals in
+    `src/content/about-*.{jpg,JPG,jpeg}` aren't imported.
+  - **Milestone 2's hobby icon stickers** (and the music/reading widgets)
+    should reuse this same `Sticker` wrapper with illustrated content
+    instead of photos — including swapping the emoji in About's "I can
+    also be found..." list for the site's own sticker icons.
 
 ## Working conventions
 
@@ -305,52 +661,63 @@ decision needed.
 
 ## Roadmap
 
-### Milestone 1 — Static one-page shell *(current)*
+### Milestone 1 — Static one-page shell *(shipped)*
 
-1. Scaffold a fresh Vite + React + TypeScript project in the `portfolio`
-   repo (skip if already done).
-2. Design tokens file: color palette (paper white, Bauhaus red, blue and
-   yellow accents) with light/dark variants, plus the dot-grid CSS
-   background that recolors per theme.
-3. `GlassCard` component (frosted/blurred container), built first since
-   every section uses it.
-4. Dark/light toggle wired up: defaults to system preference, persists the
-   user's explicit choice, swaps the `data-theme` attribute.
-5. Hero section: placeholder name treatment (plain styled text is fine
-   before the final calligraphy illustration exists), byline set in Sora,
-   nav and section headers set in Unbounded.
-6. About / Work / Contact sections as placeholder content inside
-   `GlassCard`s, with working anchor-link nav and smooth scroll between
-   them.
-7. Deployed to GitHub Pages or Vercel for a shareable, iterable link.
+1. ✅ Fresh Vite + React + TypeScript project.
+2. ✅ Design tokens file (palette + dot-grid background); light-mode dot
+   opacity was tuned down after the first look.
+3. ✅ `GlassCard` component.
+4. ✅ Dark/light toggle, persisted.
+5. ✅ Hero section (placeholder name treatment, byline in Sora, portrait
+   placeholder in an organic oblong frame).
+6. ✅ Hero / About / Work / CV sections with working left-edge sticky-note
+   nav (not the original top anchor-link nav — upgraded per David's
+   request) and consistent left alignment across sections.
+7. ✅ Work section as a responsive 4-card grid (1 row of 4 → 2×2 → 4×1),
+   holding all four projects (ChoreoMapper, Dabble, A Robot, Hey Siri) with
+   "coming soon" states where content isn't ready yet.
+8. ✅ CV section (renamed from Contact) with real education/career copy and
+   LinkedIn/GitHub icon links.
+9. ✅ Deployed: Cloudflare Workers (static assets) via Workers Builds,
+   connected to `main`, custom domain `ledavid.me` attached and live
+   (deploy issues from 2026-10-12 — uncommitted `wrangler.jsonc` causing a
+   `_redirects` conflict — are resolved, see Tech stack decisions →
+   Deployment).
 
-**Done when:** the deployed site shows hero → about → work → contact as one
-scrolling page; the Bauhaus-red dot grid is visible and recedes properly
-behind glass cards (shipped, but light-mode opacity needs the tune-down
-noted in Architecture above); the dark/light toggle works and persists; nav
-links smooth-scroll to each section. *(Status: shipped — David's first look
-is in, see the polish/follow-on items layered on top in Open design
-decisions and Milestone 3.)*
+**Status: fully shipped**, including the follow-on polish round (dot
+opacity, Sora body font, grid behavior, left-edge nav redesign, CV content,
+hero portrait placeholder, nav contrast). Still open from this milestone:
+exact palette hex values aren't confirmed against the actual notebook, and
+the sticky-note nav's precise visual styling was a first pass, not
+necessarily final (see Open design decisions above).
 
-### Milestone 2 — Real content + static stickers
+### Milestone 2 — Real content + static stickers *(partially done)*
 
-- Real About/Contact/Work copy.
-- Static (non-interactive yet) sticker widgets: music, reading, hobby icons,
-  placed within the layout.
-- Palette hex values confirmed against the actual notebook/swatch
-  (typography is already decided — Unbounded + Inter, see Typography above).
+- CV copy is real and shipped (done, moved under Milestone 1 above since it
+  landed with that round of work).
+- **Still open:** real About copy (still placeholder); static sticker
+  widgets (music, reading, hobby icons) not built yet; palette hex values
+  not confirmed against the actual notebook/swatch. Typography is already
+  decided — Unbounded + Sora, see Typography above.
+- Not a blocker for Milestone 3 below — the case-study work doesn't depend
+  on any of these, so it's reasonable to defer them and come back after.
 
-### Milestone 3 — Case studies + page-turn transition
+### Milestone 3 — Case studies + page-turn transition *(current — starting now)*
 
 - Dedicated case-study view template, with ChoreoMapper and Hey Siri
   content ported first (copy is finalized for both — text only; images and
-  other media come later). Dabble and A Robot follow once their copy is
-  ready.
+  other media come later). *(Done.)* A Robot's first-draft copy and images
+  landed 2026-10-13 (pending David's proofread and the proposed research
+  question); Dabble has a draft too, pending review.
 - Wire up the Work section's four project cards so clicking one triggers
   the transition into its case study (only ChoreoMapper and Hey Siri will
   have real destinations until the other two have content — Dabble/A Robot
   cards can stay visually present but inert, or get a "coming soon" state,
-  until then).
+  until then). *(Done for all four. Dabble, A Robot and ChoreoMapper are linked with
+  `status: "under-construction"` in their frontmatter — a ribbon and
+  banner, not a block — until their copy is final; see Architecture →
+  Case study content as MDX. `comingSoon` stays available for a future
+  project with no page yet.)*
 - In-case-study outline/TOC nav: a secondary nav layer, generated from that
   case study's own section headings, appearing hierarchically below the
   main left-edge nav (see Navigation above) for jumping within the case

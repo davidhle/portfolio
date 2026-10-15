@@ -1,0 +1,147 @@
+/* Sticker: tilted, shadowed, white die-cut border. The shadow is a
+   drop-shadow filter on the wrapper so it follows the clipped outline
+   (a box-shadow would be clipped away with the box). */
+.sticker {
+  --sticker-shadow: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.18));
+  --sticker-border: 6px;
+  position: relative;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  rotate: var(--sticker-rotate, 0deg);
+  filter: var(--sticker-shadow);
+  transition:
+    rotate 0.3s cubic-bezier(0.2, 0, 0, 1),
+    scale 0.3s cubic-bezier(0.2, 0, 0, 1),
+    filter 0.3s ease;
+}
+
+button.sticker {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Paper-white in both themes, like a real sticker */
+.sticker__die {
+  display: block;
+  padding: var(--sticker-border);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.sticker__die > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* Die-cut outline: the white backing and the photo share it, so the photo
+   is inset by the border all the way round (same trick as the hero blob) */
+.sticker--blob-a .sticker__die,
+.sticker--blob-a .sticker__die > img {
+  clip-path: url(#sticker-blob-a);
+}
+
+.sticker--blob-b .sticker__die,
+.sticker--blob-b .sticker__die > img {
+  clip-path: url(#sticker-blob-b);
+}
+
+.sticker--blob-c .sticker__die,
+.sticker--blob-c .sticker__die > img {
+  clip-path: url(#sticker-blob-c);
+}
+
+/* Foreground: above its neighbours, a little bigger, mostly straightened,
+   with a deeper shadow. Hover only where hover exists, so a tap on touch
+   doesn't leave a sticky :hover behind. */
+.sticker--raised,
+button.sticker:focus-visible {
+  z-index: 10;
+  rotate: calc(var(--sticker-rotate, 0deg) * 0.25);
+  scale: 1.08;
+  filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.3));
+}
+
+@media (hover: hover) {
+  button.sticker:hover {
+    z-index: 10;
+    rotate: calc(var(--sticker-rotate, 0deg) * 0.25);
+    scale: 1.08;
+    filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.3));
+  }
+}
+
+/* The focus ring would be clipped to a rectangle around a blob; the lift is the indicator */
+button.sticker:focus-visible {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sticker {
+    transition: none;
+  }
+}
+
+.sticker-defs {
+  position: absolute;
+}
+
+/* Scatter: a zigzag row, stickers overlapping slightly. Wraps to a
+   two-up zigzag on narrow screens. */
+.sticker-scatter {
+  --scatter-zig: 48px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  /* Room for the zigzag drop and the tilted corners */
+  padding-block: var(--space-3) calc(var(--scatter-zig) + var(--space-3));
+}
+
+.sticker-scatter > .sticker {
+  flex: 0 0 calc(var(--sticker-width, 0.2) * 100%);
+  margin-inline: calc(var(--space-3) * -0.5);
+}
+
+.sticker-scatter > .sticker:nth-child(even) {
+  translate: 0 var(--scatter-zig);
+}
+
+@media (max-width: 734px) {
+  .sticker-scatter {
+    --scatter-zig: 32px;
+    row-gap: var(--space-3);
+  }
+
+  .sticker-scatter > .sticker {
+    flex-basis: 50%;
+  }
+}
+
+/* Free scatter: each sticker at its own --place-x/--place-y across the box
+   (0 = left/top edge, 1 = right/bottom edge). Offsetting by the same share
+   of the sticker's own size keeps it inside the box at any height, so the
+   box can be stretched to whatever sits beside it; stickers overlap as
+   needed, later ones on top. */
+@media (min-width: 1024px) {
+  .sticker-scatter--free {
+    position: relative;
+    display: block;
+    padding: 0;
+  }
+
+  .sticker-scatter--free > .sticker,
+  .sticker-scatter--free > .sticker:nth-child(even) {
+    position: absolute;
+    left: calc(var(--place-x) * 100%);
+    top: calc(var(--place-y) * 100%);
+    width: calc(var(--place-w) * 100%);
+    margin: 0;
+    translate: calc(var(--place-x) * -100%) calc(var(--place-y) * -100%);
+  }
+}

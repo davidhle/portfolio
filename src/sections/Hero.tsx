@@ -1,20 +1,27 @@
+import { TypewriterName } from '../components/TypewriterName';
+import portrait from '../content/david-landing.jpg';
+
 export function Hero() {
   return (
     <header id="top" className="hero">
       <div className="hero__text">
-        <p className="hero__greeting">Hi, my name is</p>
-        {/* Placeholder — replaced by the calligraphy illustration (PNG) later */}
-        <h1 className="hero__name">David</h1>
+        <p className="hero__greeting">Hi 👋🏼 my name is</p>
+        <h1 className="hero__name">
+          <TypewriterName />
+        </h1>
         {/* Placeholder byline, may change */}
-        <p className="hero__byline">M.Sc. HCI Graduate based in Berlin, Germany</p>
+        {/* <p className="hero__byline">A designer and researcher based in Berlin, Germany</p> */}
       </div>
 
-      {/* Placeholder portrait — swap this div for <img className="hero__portrait" src=… alt=…>;
-          the blob clip-path applies to either. */}
-      {/* Frame = the blob filled with the card surface; the portrait is the same
+      {/* Frame = the blob filled with --hero-blob-border (blue light, yellow dark); the portrait is the same
           blob inset by the Work cards' padding, leaving a matching border */}
       <div className="hero__portrait-frame">
-        <div className="hero__portrait" role="img" aria-label="Portrait of David (placeholder)" />
+        <img
+          className="hero__portrait"
+          src={portrait}
+          alt="David smiling and giving a thumbs-up beside a projected ChoreoMapper title slide at his master's thesis defense"
+          decoding="async"
+        />
       </div>
 
       {/* Organic pebble outline in 0–1 units, so it stretches to the portrait's box */}

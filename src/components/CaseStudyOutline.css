@@ -1,0 +1,130 @@
+/* Right edge of the viewport, below the theme toggle. The handle rides on the
+   panel's left edge; closing slides the whole thing right until only the
+   handle peeks out. */
+.outline {
+  position: fixed;
+  top: calc(var(--space-3) + 44px + var(--space-3));
+  right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: flex-start;
+  max-height: calc(100vh - 44px - 2 * var(--space-3) - var(--space-4));
+  transition: transform 0.3s ease;
+  view-transition-name: case-study-outline;
+}
+
+.outline:not([data-open='true']) {
+  transform: translateX(var(--outline-width));
+}
+
+.outline__toggle {
+  flex: none;
+  width: 24px;
+  height: 44px;
+  margin-top: var(--space-3);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: var(--color-paper);
+  background: var(--color-ink);
+  border: 0;
+  border-radius: 8px 0 0 8px;
+  box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.14);
+  cursor: pointer;
+}
+
+/* Collapsed: the same arrow, pointing back (←) */
+.outline__arrow--back {
+  transform: scaleX(-1);
+}
+
+.outline__panel {
+  box-sizing: border-box;
+  width: var(--outline-width);
+  max-height: inherit;
+  overflow-y: auto;
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
+  border-radius: 10px 0 0 10px;
+  border: 1px solid var(--glass-border);
+  border-right: 0;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--glass-shadow);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .outline__panel {
+    background: var(--glass-bg-solid);
+  }
+}
+
+/* Overlaying the page on narrow screens: opaque, so text underneath doesn't show through */
+@media not all and (min-width: 1024px) {
+  .outline__panel {
+    background: var(--glass-bg-solid);
+  }
+}
+
+.outline__title {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-ink);
+}
+
+.outline__list,
+.outline__sublist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.outline__list > li + li {
+  margin-top: var(--space-2);
+}
+
+/* ### entries, indented under their ## */
+.outline__sublist {
+  margin: var(--space-1) 0 0 var(--space-3);
+  padding-left: var(--space-2);
+  border-left: 1px solid color-mix(in srgb, var(--color-ink) 15%, transparent);
+}
+
+.outline__sublist li + li {
+  margin-top: var(--space-1);
+}
+
+.outline__link {
+  display: block;
+  padding: 2px 0;
+  text-decoration: none;
+  color: var(--color-ink-soft);
+}
+
+.outline__list > li > .outline__link {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.outline__link:hover {
+  color: var(--color-blue);
+}
+
+.outline__link[aria-current='location'] {
+  color: var(--color-blue);
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .outline {
+    transition: none;
+  }
+}
