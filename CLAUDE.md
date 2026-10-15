@@ -34,8 +34,10 @@ with real content, dark/light toggle, and dot-grid theming.
 **Milestone 3 (case studies + page-turn transition) is underway.**
 ChoreoMapper and Hey Siri case study pages are both built (branch
 `milestone-3-case-studies`), with the outline/TOC nav, prev/next navigation
-between them, and Figma-embed fixes. A Robot and Dabble have draft pages
-pending David's review; their cards stay "Coming soon" until then. A Work card links to its case study
+between them, and Figma-embed fixes. A Robot and Dabble have pages that are
+linked but marked `status: "under-construction"` (card ribbon + page
+banner) until David finalizes them. ChoreoMapper is also marked
+under construction while David reorders it (final prototype first). A Work card links to its case study
 once `src/content/case-studies/<project id>.mdx` exists; that case study's
 images live in `src/content/case-studies/assets/<project id>/` and MDX `src`
 values are filenames relative to it. See `docs/SPEC.md` → Vision → "Source
@@ -61,7 +63,8 @@ deploy failure. See `docs/SPEC.md` → Tech stack decisions → Deployment.
 - Vite + React + TypeScript
 - Standard CSS Grid/Flexbox layout, anchor-link nav, smooth scroll — no
   pan/zoom library
-- Fonts: **Unbounded** (headers/display, Google Fonts) + **Sora** (body,
+- Fonts: **Patriot** (h1 titles only, self-hosted, on trial) + **Unbounded**
+  (h2 onwards and other display text, Google Fonts) + **Sora** (body,
   Google Fonts) — see `docs/SPEC.md` → Typography
 - Theming: CSS custom properties + `data-theme` attribute, default from
   `prefers-color-scheme`, persisted via `localStorage`

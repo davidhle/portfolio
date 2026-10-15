@@ -1,17 +1,19 @@
+import { TypewriterName } from '../components/TypewriterName';
 import portrait from '../content/david-landing.jpg';
 
 export function Hero() {
   return (
     <header id="top" className="hero">
       <div className="hero__text">
-        <p className="hero__greeting">Hi, my name is</p>
-        {/* Placeholder — replaced by the calligraphy illustration (PNG) later */}
-        <h1 className="hero__name">David</h1>
+        <p className="hero__greeting">Hi 👋🏼 my name is</p>
+        <h1 className="hero__name">
+          <TypewriterName />
+        </h1>
         {/* Placeholder byline, may change */}
-        <p className="hero__byline">M.Sc. HCI Graduate based in Berlin, Germany</p>
+        {/* <p className="hero__byline">A designer and researcher based in Berlin, Germany</p> */}
       </div>
 
-      {/* Frame = the blob filled with the card surface; the portrait is the same
+      {/* Frame = the blob filled with --hero-blob-border (blue light, yellow dark); the portrait is the same
           blob inset by the Work cards' padding, leaving a matching border */}
       <div className="hero__portrait-frame">
         <img

@@ -70,6 +70,39 @@
   border: 1px solid var(--glass-border);
 }
 
+/* Under construction (frontmatter status): a caution-tape ribbon across the
+   top-right corner. Separate from coming-soon above — this card is linked. */
+.project-thumbnail__ribbon-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.project-thumbnail__ribbon {
+  position: absolute;
+  top: 30px;
+  right: -52px;
+  width: 200px;
+  transform: rotate(45deg);
+  padding: 9px 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--caution-black);
+  /* Yellow band, caution stripes along both edges */
+  background:
+    var(--caution-stripes) top / 100% 5px no-repeat,
+    var(--caution-stripes) bottom / 100% 5px no-repeat,
+    var(--caution-yellow);
+  box-shadow: 0 2px 6px rgba(29, 28, 26, 0.25);
+}
+
 /* Has a case study: the title link stretches over the whole card */
 .project-thumbnail__link {
   color: inherit;

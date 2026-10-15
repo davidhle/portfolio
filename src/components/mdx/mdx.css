@@ -1,6 +1,6 @@
 /* Captioned media block shared by every MDX embed/placeholder */
 .mdx-figure {
-  margin: var(--space-5) 0;
+  margin: var(--flow-block) 0;
 }
 
 .mdx-figure figcaption {
@@ -91,6 +91,51 @@
   height: max(480px, 75vh);
 }
 
+/* LiveAppEmbed: a responsive app, so a fixed height tall enough for its
+   sidebar + visualization, capped so it doesn't swallow a big screen */
+.embed--app {
+  height: clamp(480px, 75vh, 760px);
+}
+
+/* Embed note: a sticky note taped above an embed's top edge, pointing down
+   into it. Fixed paper colors in both themes, like a real note. */
+.embed-note {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto -10px;
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: #1d1c1a;
+  background: #fbe8a6;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+  transform: rotate(-1.5deg);
+}
+
+/* Strip of tape */
+.embed-note::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  width: 56px;
+  height: 16px;
+  translate: -50% 0;
+  rotate: 3deg;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+.mdx-figure figcaption a {
+  color: inherit;
+}
+
+.mdx-figure figcaption a:hover {
+  color: var(--color-blue);
+}
+
 /* Aspect ratio comes from MiroEmbed's width/height; keep phones usable */
 .embed--miro {
   min-height: 360px;
@@ -100,7 +145,7 @@
 .theme-comparison {
   position: relative;
   max-width: 520px;
-  margin: var(--space-5) auto;
+  margin: var(--flow-block) auto;
   padding: var(--space-4);
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -395,7 +440,7 @@
 /* MediaSplit: prose beside an image, stacking when the column is narrow */
 .media-split {
   container-type: inline-size;
-  margin: var(--space-5) 0;
+  margin: var(--flow-block) 0;
 }
 
 .media-split__grid {

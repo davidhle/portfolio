@@ -19,7 +19,8 @@ body {
   /* Reserve the left edge for the fixed SideNav tabs */
   padding-left: var(--nav-gutter);
   font-family: var(--font-body);
-  line-height: 1.6;
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
   color: var(--color-ink);
   background-color: var(--color-paper);
   /* Dot grid: a repeating radial-gradient, recolored per theme via --dot-color */
@@ -41,7 +42,22 @@ h2,
 h3 {
   font-family: var(--font-display);
   line-height: 1.15;
-  margin: 0 0 var(--space-3);
+  margin: 0 0 var(--flow-text);
+}
+
+h1 {
+  font-family: var(--font-title);
+}
+
+/* Text rhythm (Apple-style): space only below, so a block's gap is set by
+   what it follows; figures etc. bring their own larger margins, which
+   collapse with these. Lists only when unclassed (prose), so nav/tag/flex lists are untouched. */
+:where(p, ul:not([class]), ol:not([class])) {
+  margin: 0 0 var(--flow-text);
+}
+
+:where(ul:not([class]), ol:not([class])) > li + li {
+  margin-top: var(--flow-tight);
 }
 
 a {

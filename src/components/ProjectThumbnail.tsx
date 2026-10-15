@@ -1,5 +1,6 @@
 import type { Project } from '../data/projects';
 import { getCaseStudyMeta, hasCaseStudy } from '../content/case-studies';
+import { isUnderConstruction } from '../content/case-studies/types';
 import { caseStudyAssetUrl } from '../content/case-studies/assets';
 import { caseStudyPath, handleLinkClick, pageTurnName } from '../router';
 import { GlassCard } from './GlassCard';
@@ -15,6 +16,7 @@ export function ProjectThumbnail({ project }: ProjectThumbnailProps) {
   const linked = !project.comingSoon && hasCaseStudy(project.id);
   const meta = getCaseStudyMeta(project.id);
   const tags = meta?.tags ?? [];
+  const underConstruction = linked && isUnderConstruction(meta);
   const cover = meta?.coverImage && caseStudyAssetUrl(project.id, meta.coverImage);
   const themedCover = !cover && project.cover && {
     light: caseStudyAssetUrl(project.id, project.cover.light),
@@ -59,6 +61,12 @@ export function ProjectThumbnail({ project }: ProjectThumbnailProps) {
         <div className="project-thumbnail__image" aria-hidden="true" />
       )}
       {project.comingSoon && <span className="project-thumbnail__badge">Coming soon</span>}
+      {/* Heads-up only: clicks pass through to the card's link */}
+      {underConstruction && (
+        <span className="project-thumbnail__ribbon-clip">
+          <span className="project-thumbnail__ribbon">Under construction</span>
+        </span>
+      )}
       <h3 className="project-thumbnail__title">
         {linked ? (
           <a

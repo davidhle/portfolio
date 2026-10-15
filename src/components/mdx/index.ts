@@ -1,5 +1,5 @@
 import type { MDXComponents } from 'mdx/types';
-import { FigmaEmbed, MiroEmbed, NotionEmbed, VideoEmbed } from './Embeds';
+import { FigmaEmbed, LiveAppEmbed, MiroEmbed, NotionEmbed, VideoEmbed } from './Embeds';
 import { Figure } from './Figure';
 import { ImagePlaceholder } from './ImagePlaceholder';
 import { ImageSlideshow } from './ImageSlideshow';
@@ -16,6 +16,7 @@ export const mdxComponents: MDXComponents = {
   FigmaEmbed,
   NotionEmbed,
   MiroEmbed,
+  LiveAppEmbed,
   ThemeComparison,
   ParticipantResponseCarousel,
   ImageSlideshow,

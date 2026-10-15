@@ -36,9 +36,9 @@ card treatment that softens the dot grid behind it so the grid reads as
 texture rather than noise, without hiding the content.
 
 **Sections (page order):**
-- **Hero/intro** — "Hi, my name is David," name rendered in a Vietnamese-
-  calligraphy-inspired flowing style (planned as a custom illustrated PNG,
-  not a web font), and a byline ("M.Sc. HCI Graduate based in Berlin,
+- **Hero/intro** — "Hi, my name is" greeting, the name as a looping
+  typewriter animation between "David Lê" and "Đạt Lê" (see "Hero name
+  animation" below), and a byline ("M.Sc. HCI Graduate based in Berlin,
   Germany" — placeholder, may change). No project cards in the hero itself
   (superseded — see "Open design decisions"); the hero's job is the intro,
   Work is where all projects live. A real portrait (`david-landing.jpg`,
@@ -82,6 +82,11 @@ jumping. See "Navigation" below.
   a YouTube video, a Notion page) — photos are still placeholders pending
   the actual image files, but this is no longer "text only," embeds are in
   scope now. Original source: https://ledavid.framer.website/work/choreomapper
+  *Restructure planned (2026-10-15), marked `status: "under-construction"`
+  meanwhile:* David will lead with the final prototype iteration, then walk
+  through how it got there, then the evaluation's results and insights —
+  highlighting the takeaways that went on to inform some of Dabble's design
+  choices.
 - Hey Siri — final copy delivered 2026-10-12 as
   `src/content/case-studies/hey-siri.mdx` (see Architecture →
   Case study content as MDX). Includes 8 real participant-response card
@@ -89,7 +94,18 @@ jumping. See "Navigation" below.
   2 still-placeholder image spots (the 16-page probe booklet, and the
   final probe-design photo). Original source:
   https://ledavid.framer.website/work/voice
-- Dabble (live app) — copy status not yet confirmed:
+- Dabble — MDX written as `src/content/case-studies/dabble.mdx` (first
+  drafted 2026-10-13 from the app's own Home/About copy, since expanded by
+  David). Its card is live in the Work grid, with light/dark thumbnails
+  that invert the portfolio's theme (`cover` in `src/data/projects.ts`).
+  The hero spot at the top is one live `<LiveAppEmbed>` of the deployed
+  app (opening on the Constellation view), with a sticky note pointing at
+  the app's own view switcher (Constellation / Linear Timeline / Spiral
+  Timeline) — confirmed 2026-10-13 that GitHub Pages sends no
+  X-Frame-Options/CSP header and that the views render inside an iframe.
+  (Until 2026-10-15 there was one embed per view under "Three Views of One
+  Practice"; consolidated into the hero since the app switches views
+  itself, so those subsections are text-only now.) The other image spots are still placeholders. Live app:
   https://davidhle.github.io/dabble
 - A Robot — first-draft copy delivered 2026-10-13 as
   `src/content/case-studies/arobot.mdx` (see Architecture → Case study
@@ -106,6 +122,38 @@ jumping. See "Navigation" below.
   research-question blockquote is a proposed framing, not from the source
   materials — confirm it before publishing. Original source:
   https://thedavidle.wixsite.com/home/arobot
+
+### Hero name animation
+
+The hero name alternates between "David Lê" and "Đạt Lê" (David's
+Vietnamese given name) as a looping per-letter typewriter reveal: type one
+name out with a blinking cursor, pause, clear it, type the other, pause,
+repeat. Built 2026-10-13 as `src/components/TypewriterName.tsx`, set in the
+title font (Patriot — see Typography); it backspaces to clear
+rather than crossfading, and the timings are constants at the top of the
+file.
+
+- **Not true handwriting animation.** Per-stroke "being written" animation
+  would need hand-traced SVG stroke paths for both names — a font's glyphs
+  are filled outlines, not pen-stroke paths, so they can't be drawn on
+  stroke by stroke. That path art doesn't exist yet; it's a possible future
+  upgrade, not current scope. Don't fake it by over-animating the
+  typewriter.
+- **Reduced motion:** with `prefers-reduced-motion: reduce`, it shows
+  "David Lê" statically, with no loop and no cursor.
+- **Screen readers** get both names once ("David Lê, also Đạt Lê", the
+  Vietnamese marked `lang="vi"`), not every keystroke.
+- **Layout:** both full names sit invisibly underneath the typed text, so
+  the longer one's size is always reserved and typing never reflows the
+  hero. The name is sized to its text column (container query units) so
+  "David Lê" always fits on one line, with extra space below for the dot
+  under ạ, which hangs well below the baseline.
+- **Use Đ U+0110** (Vietnamese D with stroke), not the lookalike Ð U+00D0
+  (Icelandic eth): Patriot has the former but not the latter, so U+00D0
+  silently falls back to a system font.
+
+Replaces the earlier plan for a custom illustrated PNG of the name — see
+Superseded decisions.
 
 ### Navigation
 
@@ -237,6 +285,13 @@ direction is dropped in favor of the one-page layout above — noted here so
 a Claude Code session doesn't resurrect canvas-engine code from an earlier
 commit or conversation.
 
+The hero name was planned as a custom illustrated PNG in a Vietnamese-
+calligraphy-inspired style. Dropped 2026-10-13 for the typewriter animation
+(see "Hero name animation" above): a static image can't be typed out
+letter by letter. The "David Lê" signature sticker that returns from a case
+study was meant to share that PNG's style; it's live text in the display
+font for now.
+
 ## Known bugs
 
 - **Dark-mode theme-toggle icon** on the case study page falls back to a
@@ -258,9 +313,9 @@ work directly:
   and cover.
 - **Light-mode dot-grid opacity** needs a specific value — see Architecture
   above.
-- **Copy status for Dabble** isn't confirmed (ChoreoMapper and Hey Siri
-  are final, A Robot has a first draft — see Vision → Source content to
-  port).
+- **A Robot's copy** is a first draft pending David's proofread and the
+  proposed research question (ChoreoMapper, Hey Siri and Dabble are
+  written — see Vision → Source content to port).
 - **Sticky-note nav visual details** (exact shape/texture of the tabs,
   spacing, active-state styling) aren't specified beyond the "annotation
   tab on a book/journal edge" direction in Navigation above — there's room
@@ -275,9 +330,51 @@ work directly:
 the reference image's "CANCER" wordmark (that image was used only for its
 font style — its moondust/daybreak/pebble/seaglass/harbor-night color
 palette is not part of this project's palette). Use Unbounded for section
-headers (About, Work, Contact), the nav, and any display-scale type; the
-"David"/"David Lê" name treatment stays a custom illustrated PNG, not a web
-font, so Unbounded doesn't need to carry that part.
+headers (About, Work, Contact), the nav, and any display-scale type,
+including the hero name animation (see Vision → Hero name animation).
+
+**Testing: Patriot** *(trialed as the whole display font on 2026-10-13;
+narrowed on 2026-10-15 to page titles only — the `h1`s, i.e. the hero name
+and case study titles — because it was too much at smaller header sizes.
+Unbounded is back for h2 onwards, the nav, and all other display text)*. Self-hosted, not from Google
+Fonts. Designed by Hoàng Lê and released through Republish (republi.sh), a
+non-profit project of Behalf Studio. Inspired by the hand-lettering on a
+historic songbook cover archived in the Hồ Chí Minh Museum. A bold,
+geometric display sans with uniform weight — in the foundry's words, "no
+flourishes nor distinctions between thick and thin lines." It's also
+unicase: lowercase letters draw as capitals, so all headers read in caps.
+Weights: Light, Regular, Normal, Medium, Bold, UltraBold, Black (Normal is
+lighter than Regular; see Architecture → Self-hosted fonts). The foundry
+lists "Basic Latin & Vietnamese" as its supported languages.
+
+Caveats:
+- **License.** The republi.sh page doesn't publish license terms, and the
+  downloaded package (`Patriot-v1.0`) has no license file. What it does
+  have: `Documentation/contribute-support.pdf` says "The typefaces in
+  Republish are open-source, which means they are free to be used for
+  commercials and personal projects … Please remember to credit us
+  whenever & wherever possible." The font files' own metadata says only
+  "Copyright © 2020 by Behalf Studio. All rights reserved." with no
+  license fields. Fine for this personal portfolio with credit given; for
+  anything beyond that, confirm terms with the foundry
+  (republish@onbehalfof.studio).
+- **Vietnamese coverage** — confirmed 2026-10-13: Đ/đ (U+0110/U+0111) and
+  ạ (U+1EA1) are in all seven weights and render in the webfont in the
+  browser, with no system-font fallback. The lookalike Ð U+00D0 is *not* in
+  the font; always type the name with U+0110.
+- **Not handwriting.** Being bold, geometric and uniform-weight, it won't
+  read as flowing handwriting when animated. It fits section headers and
+  the nav (same poster-like family as Unbounded); David has seen it on the
+  hero name animation and is happy with it (2026-10-13), but it's still on
+  trial overall.
+- **Credit** — done: the CV section shows "Header typeface: Patriot by
+  Hoàng Lê, via Republish" under the contact links, linking to
+  https://republi.sh/. Keep it as long as Patriot is in use.
+
+Two tokens in `src/styles/tokens.css`: `--font-title` (Patriot, used only
+by the `h1` rule in `global.css`) and `--font-display` (Unbounded,
+everything else). To drop Patriot entirely, point `--font-title` at
+`var(--font-display)`.
 
 **Body font: Sora** (Google Fonts, free, variable weight) — David's pick
 over the earlier Inter suggestion, to pair with Unbounded. Sora is a
@@ -289,8 +386,27 @@ in a header or body copy, double-check Sora's and Unbounded's accented-
 character glyph coverage before relying on either — this wasn't confirmed
 and a fallback stack may be needed for full diacritic support.
 
-Both are free, self-hostable, and available via Google Fonts — no licensing
-decision needed.
+Unbounded and Sora are both free and available via Google Fonts — no
+licensing decision needed (Patriot's caveats are above).
+
+### Spacing (content rhythm)
+
+Apple-style (apple.com / HIG), added 2026-10-15. Body copy is 17px on a
+25px line (`--body-size`, `--body-leading`). Text spacing is in `em` so it
+scales with the text: `--flow-text` (0.8em — paragraph → paragraph,
+heading → its text) and `--flow-tight` (0.4em — prose list items). Text
+blocks get space only below; figures, embeds, quotes and splits carry
+`--flow-block` margins that collapse with it. Block spacing is px on the
+8pt grid and steps down at Apple's breakpoints:
+
+| Token            | >1068px | ≤1068px | ≤734px | Used for                          |
+| ---------------- | ------- | ------- | ------ | --------------------------------- |
+| `--flow-block`   | 48      | 40      | 32     | media/quotes/splits, h3 above     |
+| `--flow-section` | 80      | 64      | 48     | case study h2 above               |
+| `--flow-page`    | 96      | 80      | 64     | one-pager section gap, page top   |
+
+The `--space-1…6` steps (4/8/16/24/40/64) stay for component internals
+(padding, gaps inside cards, nav, controls).
 
 ## Tech stack decisions
 
@@ -351,6 +467,14 @@ decision needed.
   mode already uses a dimmed/desaturated variant so it recedes rather than
   fighting the content; re-check it once light mode's opacity is fixed, in
   case the two need different treatment.
+- **Self-hosted fonts.** Patriot is the project's first self-hosted
+  typeface (Unbounded and Sora come from Google Fonts via `index.html`).
+  Files live at `src/assets/fonts/patriot/`, one per weight, `.woff2`
+  preferred. Each weight gets its own `@font-face` rule at the top of
+  `src/styles/tokens.css`, next to the `--font-title`/`--font-display`/`--font-body`
+  tokens. Map weights from each file's actual weight, not its name:
+  Patriot's Regular and Normal both claim 400, but Normal is visibly
+  lighter, so it's declared at 350.
 - **Case study content as MDX** (decided — not JSON): real content turned
   out to interleave prose, headings, bullet lists, and media (photos,
   Figma embeds, a YouTube video, a Notion embed) at specific points within
@@ -366,7 +490,24 @@ decision needed.
   the case study header shows them as a "Collaborators" detail, before
   Affiliations. Leave it out for solo work rather than listing David
   alone, and still name the teammates once in the opening paragraph so the
-  credit reads in the prose too. Body
+  credit reads in the prose too. `status` marks how finished a case
+  study is: `"published"` (the default when omitted — Hey Siri leaves
+  it out) or `"under-construction"` (real copy and media,
+  but not final). Under construction, the Work card gets a diagonal
+  black/yellow caution-tape ribbon across its top-right corner, and the
+  case study page gets a matching banner below the title/metadata ("Under
+  construction — this case study is still being finalized, so its content
+  may change"), for visitors who land on the URL directly. Both are
+  heads-ups only: the card stays fully linked and in the prev/next
+  sequence. The caution colors are their own tokens (`--caution-yellow`,
+  `--caution-black`, `--caution-stripes` in `tokens.css`), fixed in both
+  themes like real tape. Dabble and A Robot currently use
+  `"under-construction"` (since 2026-10-13), and ChoreoMapper too (since
+  2026-10-15, while David reorders it — see Source content to port); drop
+  the line once each is final. This is separate from `comingSoon` in `src/data/projects.ts`,
+  which means a project has no page at all (muted, inert card with a
+  "Coming soon" pill) — don't conflate the two states or their styling.
+  Body
   content as markdown + a small shared component vocabulary:
   `<ImagePlaceholder label count />` (photos not yet supplied — renders a
   placeholder box), `<VideoEmbed src label />`, `<FigmaEmbed src label />`,
@@ -393,6 +534,19 @@ decision needed.
   dimensions — can override them per instance. Where a sliver is still
   unavoidable, set that container's background to match the page's
   glass-card/theme background instead of plain black, so it blends in),
+  `<LiveAppEmbed src label note? />` (new 2026-10-13, used for Dabble's
+  hero — a live, interactive iframe of a deployed web app, e.g.
+  `https://davidhle.github.io/dabble/#/spiral`. Lazy-loaded, with `label`
+  as the iframe's `title` and caption, plus an "Open in new tab ↗" link in
+  the caption as a fallback and for full-size use. Since it's a
+  responsive app rather than a fixed design frame, the frame is a fixed
+  height, `clamp(480px, 75vh, 760px)`, not an aspect ratio. Optional
+  `note` (text/JSX) renders a taped-on yellow sticky note overlapping the
+  frame's top edge — for pointing visitors at the app's own controls; keep
+  it short so it doesn't cover them. Before using
+  it on a new site, check that the site doesn't send `X-Frame-Options` or
+  a CSP `frame-ancestors` that blocks embedding; if it does, use
+  screenshots instead of shipping a broken embed),
   `<ThemeComparison previous updated />`
   (a before/after theme-list card, first used for ChoreoMapper's interview
   section — reusable wherever a similar comparison comes up), and
@@ -461,6 +615,39 @@ decision needed.
   consistent for that reason, independent of visual styling.
 - **Stickers** share a common wrapper component (tilt, shadow, washi-tape
   styling) and differ only in content/data.
+  - **Built (2026-10-15)** as `src/components/Sticker.tsx` + `Sticker.css`:
+    - `Sticker` — the wrapper. Tilt (`rotate` in degrees), a white die-cut
+      border (paper white in both themes, like a real sticker), and a
+      `drop-shadow` filter on the wrapper so the shadow follows the
+      outline. Optional `shape` clips it to one of three organic blob
+      outlines (`blob-a` is the hero portrait's pebble; `blob-b`, `blob-c`
+      are variants), defined once as SVG `clipPath`s by `StickerDefs`
+      (rendered in `App.tsx`). With `onToggle` it's a button that lifts to
+      the foreground: higher z-index, scaled up 8%, rotation eased to a
+      quarter, deeper shadow. Lift triggers on hover (only on
+      `(hover: hover)` devices), keyboard focus, or tap/Enter toggling
+      `raised`. No idle animation; transitions are dropped under
+      `prefers-reduced-motion`. Washi tape isn't built yet.
+    - `StickerScatter` — a zigzag row of photo stickers (every second one
+      drops lower; wraps to two-up on phones). One photo at a time can be
+      tapped forward; tapping it again or anywhere else puts it back.
+      Images are `loading="lazy"` with their aspect ratio reserved.
+  - **First use: About section photo scatter.** Five photos (portrait on a
+    terrace, pole, beach portrait, slab boulder at Bahratal, the Bauhaus
+    University staircase), blob-framed with the three outlines rotated
+    through them, come to the foreground on hover/tap. This replaced the
+    single pole photo in a `MediaSplit`. From 1024px they fill a right
+    column beside the text (3fr text / 2fr photos), zigzagging top to
+    bottom and stretched to the text's height (overlap is fine — the
+    hover/tap lift is how you see one whole), via `StickerScatter free` and
+    each photo's `place`. Below 1024px they drop to the zigzag row under
+    the text. Web-sized copies (≤1000px long edge; the beach portrait
+    cropped to mostly David) live in `src/content/about/`; the originals in
+    `src/content/about-*.{jpg,JPG,jpeg}` aren't imported.
+  - **Milestone 2's hobby icon stickers** (and the music/reading widgets)
+    should reuse this same `Sticker` wrapper with illustrated content
+    instead of photos — including swapping the emoji in About's "I can
+    also be found..." list for the site's own sticker icons.
 
 ## Working conventions
 
@@ -526,10 +713,11 @@ necessarily final (see Open design decisions above).
   the transition into its case study (only ChoreoMapper and Hey Siri will
   have real destinations until the other two have content — Dabble/A Robot
   cards can stay visually present but inert, or get a "coming soon" state,
-  until then). *(Done for ChoreoMapper and Hey Siri. Dabble and A Robot
-  stay `comingSoon` in `src/data/projects.ts` until their copy is
-  confirmed; removing the flag links the card and adds the page to the
-  prev/next sequence.)*
+  until then). *(Done for all four. Dabble, A Robot and ChoreoMapper are linked with
+  `status: "under-construction"` in their frontmatter — a ribbon and
+  banner, not a block — until their copy is final; see Architecture →
+  Case study content as MDX. `comingSoon` stays available for a future
+  project with no page yet.)*
 - In-case-study outline/TOC nav: a secondary nav layer, generated from that
   case study's own section headings, appearing hierarchically below the
   main left-edge nav (see Navigation above) for jumping within the case

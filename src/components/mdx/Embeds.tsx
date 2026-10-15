@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 interface EmbedProps {
   src: string;
@@ -6,19 +6,27 @@ interface EmbedProps {
 }
 
 interface EmbedFrameProps extends EmbedProps {
-  variant: 'video' | 'figma' | 'notion' | 'miro';
+  variant: 'video' | 'figma' | 'notion' | 'miro' | 'app';
   allow?: string;
   style?: CSSProperties;
+  /** Extra caption content after the label */
+  children?: ReactNode;
+  /** Sticky note taped above the frame's top edge */
+  note?: ReactNode;
 }
 
 // Lazy-loaded iframe in a captioned figure; sizing per embed type lives in mdx.css.
-function EmbedFrame({ src, label, variant, allow, style }: EmbedFrameProps) {
+function EmbedFrame({ src, label, variant, allow, style, children, note }: EmbedFrameProps) {
   return (
     <figure className="mdx-figure">
+      {note && <p className="embed-note">{note}</p>}
       <div className={`embed embed--${variant}`} style={style}>
         <iframe src={src} title={label} loading="lazy" allow={allow} allowFullScreen />
       </div>
-      <figcaption>{label}</figcaption>
+      <figcaption>
+        {label}
+        {children}
+      </figcaption>
     </figure>
   );
 }
@@ -97,6 +105,25 @@ export function MiroEmbed({ src, label, width = 768, height = 496 }: MiroEmbedPr
       allow="fullscreen"
       style={{ aspectRatio: `${width} / ${height}` }}
     />
+  );
+}
+
+/**
+ * A live, interactive view of a deployed web app (e.g. one of Dabble's views
+ * on GitHub Pages). The app is responsive, so the frame is a fixed height
+ * rather than a design-frame ratio. The site must not send X-Frame-Options
+ * or a CSP frame-ancestors that blocks embedding — check before using.
+ * `note` adds a sticky note above the frame, e.g. pointing at the app's own
+ * controls.
+ */
+export function LiveAppEmbed({ src, label, note }: EmbedProps & { note?: ReactNode }) {
+  return (
+    <EmbedFrame src={src} label={label} variant="app" note={note}>
+      {' · '}
+      <a href={src} target="_blank" rel="noopener noreferrer" aria-label={`${label}: open in new tab`}>
+        Open in new tab ↗
+      </a>
+    </EmbedFrame>
   );
 }
 

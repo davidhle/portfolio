@@ -1,154 +1,347 @@
 ---
 title: "Dabble"
-subtitle: "A web app for tracking, visualizing, and reflecting on the moments that shape a hobby or practice"
+subtitle: "A web app for tracking, visualizing, and reflecting on the moments that shape a practice, and how they look in hindsight"
 tags:
   - Data Visualization
-  - Human-in-the-loop
+  - Input Visualization
+  - Personal Informatics
   - Prototyping
   - Web Development
 affiliations: "Personal project, continuing my master's thesis (ChoreoMapper)"
 year: "2026"
+status: "under-construction"
 ---
 
-{/* NOTE: drafted from the copy on Dabble's own Home and About pages (in
-the dabble repo) plus its feature set — there was no pasted portfolio copy
-for this one like there was for ChoreoMapper and Hey Siri. Please check:
-- the tags (my picks — swap for whatever you want on the Work card)
-- the research question below, which I framed from the Home page copy
-- the affiliations line, and the year (the repo's history runs Jan–Oct 2026)
-There's deliberately no coverImage: the Work card uses the themed
-thumbnails set in src/data/projects.ts (Dabble's dark screenshot in the
-portfolio's light mode and vice versa), and a coverImage here would
-override them. */}
+{/* NOTE: revised from the Claude Code outline using the design history of the
+project. Please check:
+- the tags (I swapped "Human-in-the-loop" for "Input Visualization" and
+  "Personal Informatics" to match the framing; swap back if you prefer)
+- the extended Guiding Question (adds the "looking back later" half)
+- "40+ entries" in the intro: update to the current count before publishing
+- the "Limits so far" section is deliberately candid; trim if too much
+- "Working with AI" is optional; delete the whole section if you'd rather not
+- feature descriptions in "Turning Points" are from our design discussions;
+  double-check against the live app (e.g. exact interactions)
+- Orbit section mentions a health-related category only generically. I left
+  out the specific condition and any reflection text on purpose.
+There's deliberately no coverImage: the Work card uses the themed thumbnails
+set in src/data/projects.ts. */}
 
 Dabble is a web app I designed and built to archive and visualize the
-moments of my own dance practice, and the other activities around it that
-still shape my trajectory. It takes the spiral timeline I co-designed for
-my master's thesis, [ChoreoMapper](/work/choreomapper), and turns the
-prototype into a working tool, with three linked visualizations, a
-flexible data model for imperfect memories, and space to reflect on past
-moments in hindsight.
+moments of my own dance practice, and the activities around it that still
+shape my trajectory. It takes the spiral timeline I co-designed for my
+master's thesis, [ChoreoMapper](/work/choreomapper), and turns the prototype
+into a working tool: three linked visualizations, a data model that accepts
+memories as imperfect as they really are, and space to revisit a moment
+later and say how it looks now. It's pre-loaded with my own history, 40+
+moments from 2009 to today.
 
-> What value comes out of visualizing the moments of a practice that
-> spans different styles, and activities beyond it?
+> What value comes out of visualizing the moments of a practice that spans
+> different styles, and activities beyond it, and how does their meaning
+> change when I look back on them later?
 >
 > — Guiding Question
 
 <a href="https://davidhle.github.io/dabble" target="_blank" rel="noopener noreferrer">Try the live app</a>
 · <a href="https://github.com/davidhle/dabble" target="_blank" rel="noopener noreferrer">View the code on GitHub</a>
 
+<LiveAppEmbed
+  src="https://davidhle.github.io/dabble/#/constellation"
+  label="Dabble, live — the Constellation view"
+  note={<>💡 Switch between the <strong>Constellation</strong>, <strong>Linear Timeline</strong> and <strong>Spiral Timeline</strong> views up top ↓</>}
+/>
+
 ## Project Context & Motivation
 
 ### From ChoreoMapper to Dabble
 
 For my master's thesis, under the supervision of Eva Hornecker and Sarah
-Fdili Alaoui, I conducted participatory research with female
-choreographers and dance practitioners to co-design ChoreoMapper, an
-interactive digital tool for dancers to trace their careers. It used
-moments in the dancers' lives, both dance and non-dance related, as data
-points and visualized them in a spiral.
+Fdili Alaoui, I conducted participatory research with female choreographers
+and dance practitioners to co-design ChoreoMapper, an interactive digital
+tool for dancers to trace their careers. It used moments in the dancers'
+lives, both dance and non-dance related, as data points and visualized them
+in a spiral.
 
-The final artifact of the thesis was a high-fidelity prototype. Dabble is
-my continuation of that work: an implementation of the idea as a real web
-app that I could use myself and that anyone else can try.
+The final artifact was a high-fidelity prototype, which meant the idea had
+never been lived with. Dabble is my continuation: the same idea as a real
+app that I use on my own data, and that anyone else can try.
 
 ### Personal Motivation
 
-I myself am a dancer, and my practice spans different styles as well as
-activities that aren't directly related to dance but still impact my
-trajectory. I wanted to explore what I'd get out of visualizing those
-moments for my own archive — so the app comes pre-loaded with my own dance
-history as its example data.
+I'm a dancer, and my practice doesn't sit in one box. It has run from
+C-walking in YouTube comment sections as a teenager, through shuffle dance,
+house, pole, ballet, and yoga, alongside a research career in dance and HCI.
+Existing trackers ask me to pick one activity and log sessions. What I
+wanted was to see how the styles, people, places, and non-dance life events
+sit around each other, and to find out what I'd learn from that about my own
+trajectory.
+
+### The Visualization Is Also the Input
+
+Most personal-data tools separate the place where you enter data from the
+place where you see it. Dabble treats them as one. You add, edit, and
+reflect on entries from inside the visualizations themselves, so the picture
+of your practice is also the way you write to it. This follows the idea of
+*input visualization* (Bressa et al., CHI 2024): visualizations that support
+the act of capturing data, not only reading it afterwards. It matters here
+because the entries are memories, and a memory is easier to place when you
+can see what's around it.
 
 ## Designing for Imperfect Memories
 
-Logging a hobby after the fact rarely fits a neat form. A lot of
-Dabble's design work went into a data model that accepts entries as people
-actually remember them.
+Logging a hobby after the fact rarely fits a neat form. A lot of the design
+work went into a data model that accepts entries the way people remember
+them.
 
 ### Flexible Date Precision
 
 Entries don't need an exact date. Something can be logged as vaguely as
-"October – November 2021," given a real date range for a multi-day event,
-or recorded without a time of day if only the day is remembered.
+"October – November 2021," as a real date range for a multi-day event, or
+without a time of day if only the day is remembered. The display text and
+the underlying timestamps are kept separate, so a fuzzy memory can still be
+placed on a timeline without pretending to be precise.
+
+### Partial Locations
+
+Locations are structured as country, city, and place, and every part is
+optional. "Somewhere in Paris" is a valid answer, and so is "a club whose
+name I've forgotten."
 
 ### Dynamic Categories
 
-Categories aren't fixed in advance. When I pick up a new hobby, I can add
-a category for it and it's woven into every visualization right away,
-with its own color. Categories can be renamed or recolored later, from a
-curated palette, colors already in use, or a custom picker.
+Categories aren't fixed in advance. When I pick up a new practice I can add
+a category for it and it's woven into every visualization right away, with
+its own color. Categories can be renamed or recolored later, and suggested
+colors are spaced around the color wheel so a new category stays
+distinguishable from the existing ones.
 
 ### Reflections
 
-Any past entry can get dated, backdatable follow-up notes, each with its
-own mood, text, and media, so I can capture how I feel about a moment in
-hindsight while keeping it linked to the original. Multiple open entries
-sit in small bookmark tabs in the sidebar.
+Any past entry can get dated, backdatable follow-up notes, each with its own
+mood, text, and media. An entry keeps what I felt at the time; a reflection
+captures how I feel about it now, and the two stay linked. Entries open in
+small bookmark tabs in the sidebar, colored by category, with an
+Original / Reflections switch inside each.
 
 <ImagePlaceholder label="Entry panel with a reflection and bookmark tabs" />
 
 ## Three Views of One Practice
 
-The same entries can be explored through three visualizations, all driven
-by one shared time-range brush selector, so narrowing to a window of time
-carries across every view.
+The same entries can be explored through three visualizations, all driven by
+one shared time-range brush, so narrowing to a window of time carries across
+every view.
 
 ### Constellation
 
-Entries appear as stars clustered by activity, echoing a night sky.
-Clicking a star opens its entry; the view can be filtered by category or
-scrubbed through time.
+Entries appear as stars clustered by activity, echoing a night sky. Clicking
+a star opens its entry; the view can be filtered by category or scrubbed
+through time.
 
-<ImagePlaceholder label="Constellation view" />
+### Linear Timeline
 
-### Timeline
+A chronological view where multi-day events render as capsules and
+overlapping periods are laid out in separate lanes so they stay legible.
+Dragging moves the selected time window.
 
-A linear, chronological view of every entry. Multi-day events render as
-capsules, and overlapping periods are automatically laid out on separate
-tracks so they stay legible.
+### Spiral Timeline
 
-<ImagePlaceholder label="Timeline view" />
+Time coils outward from a center point: the earliest entry at the core, the
+most recent at the outer edge. This view comes directly from the ChoreoMapper
+prototype. Year markers are small star glyphs; hovering one highlights that
+year's band, and clicking zooms into it.
 
-### Spiral
+### A Journal, Not a Dashboard
 
-Time coils outward from a center point — the earliest entry at the core,
-the most recent at the outer edge. This view comes directly from the
-ChoreoMapper prototype.
-
-<ImagePlaceholder label="Spiral view" />
-
-### Light & Dark Themes
-
-Every view, panel, and form works in both a dark night-sky palette (the
-default) and a warm, sketchbook-paper light mode.
+Every view works in a dark night-sky palette and a warm, sketchbook-paper
+light mode. The aim was something that feels closer to a journal you return
+to than a dashboard you check, because the content is personal and the
+reason to open it is reflection, not performance.
 
 <ImagePlaceholder label="The same view in dark and light mode" count={2} />
+
+## Practice and Its Context
+
+A dancer's trajectory isn't only dance. A research internship, a move to a
+new city, a long stretch of poor health, or a change of studio all shape
+what and how someone practices. Dabble gives these a place without letting
+them crowd out the practice itself.
+
+Each category belongs to one of two domains. **Movement** categories are the
+practices themselves (shuffle, pole, yoga). **Orbit** categories are what
+moves around them: dance research, health, and other life context. Movement
+entries are drawn as solid marks; Orbit entries are hollow, and in the
+constellation they gather into a soft aurora ribbon around the stars rather
+than sitting among them.
+
+The two domains read as different kinds of thing at a glance, but they're
+still on the same timeline, so I can see, for example, how a stretch of
+reduced practice lines up with what was going on around it.
+
+<ImagePlaceholder label="Constellation with the Orbit aurora ribbon" />
+
+## Turning Points
+
+The final design is the result of a sequence of decisions, many made after
+using the app on my own history and finding something wrong. These are the
+ones that changed it most.
+
+### 💡 The data model grew through use
+
+The first version asked for a title, date, category, and notes. Entering my
+own history exposed what it couldn't hold: events I only remembered as a
+season, trips that spanned days, places I could name only as a city, moods
+that only made sense in hindsight. Each of those became a field
+(`dateDisplay`, end dates, partial locations, mood, reflections). The model
+was shaped by trying to put a real past into it.
+
+### 💡 Dim, don't hide
+
+When filtering by category, the first instinct was to remove everything that
+didn't match. But removing entries removes context: you can't see what else
+was happening. Non-matching entries now fade back instead of disappearing,
+so a filter reads as "look here" rather than "this is all there is."
+
+### 💡 The canvas never resizes
+
+Opening the sidebar first shrank the visualization to make room. Every open
+and close re-laid out the view, and the thing I was looking at moved. I
+changed it so the visualization is full-bleed and the sidebar overlays it,
+with a resizable width and a switchable side. Nothing shifts when you read
+an entry.
+
+### 💡 Drawing the spiral honestly
+
+My first spiral drew duration bands as fixed-radius arcs. They looked right
+at a glance and were wrong in the details: bands drifted off the curve and
+didn't line up with the dates they claimed to cover. I rebuilt them by
+sampling points along the real spiral, so a band's start and end sit on the
+exact stretch of time it represents. Lanes for overlapping events are
+assigned longest-first with no gaps, so stacked bands read as one
+continuous structure.
+
+### 💡 From year labels to landmarks
+
+Text year labels cluttered the spiral and fought with the entries. Replacing
+them with small star glyphs made them landmarks instead of text: quiet until
+hovered, then they light up their band, and a click zooms into that year.
+
+### 💡 Opacity was already taken
+
+Opacity already means "filtered out," so it couldn't also mean "Orbit."
+Orbit needed to differ by shape, not by fade. That led to the solid / hollow
+distinction, and on the constellation to the aurora ribbon, built with SVG
+turbulence and displacement rather than WebGL. I'd tried a shader-based
+aurora, and it was beautiful but heavy and hard to keep consistent with the
+rest of the SVG scene and its light and dark modes.
+
+### 💡 Reflections as sticky notes
+
+I considered letting people edit an entry to update how they felt. That
+overwrites the very thing the app is for: what I thought *then*. Reflections
+are separate, dated notes attached to an entry, like a sticky note on an old
+journal page. The original stays intact and the change in perspective
+becomes visible.
+
+### 💡 Two ways to reset
+
+Escape and the on-screen reset button do different things on purpose.
+Escape peels back one layer at a time (deselect, then close, then clear the
+view), so it's safe to hit by habit. The reset button goes straight back to
+the full view, for when I'm lost. A confirmation toast says what changed.
+
+### What I dropped
+
+- Clustering Orbit entries by domain in the constellation: it made the
+  aurora feel like another category rather than a different kind of thing,
+  so I reverted it.
+- A form-based multi-step add flow: pressing Next submitted the entry. I
+  replaced the form with plain controlled inputs.
+
+<ImagePlaceholder label="Before / after: fixed-radius arcs vs. sampled spiral bands" count={2} />
+
+## Working with AI
+
+I built Dabble in React, TypeScript, and D3, using Claude Code to implement
+and a separate Claude conversation to plan, reason through design decisions,
+and write the prompts. I held the design direction and tested every change
+against my own data. A recurring pattern was that a change looked fine in
+isolation and was wrong when applied to my real history, which is what
+surfaced most of the turning points above.
 
 ## Try It Yourself
 
 ### Bring Your Own Data
 
-Dabble runs entirely in the browser. Anyone visiting can reset it to a
-blank slate and start their own constellation from their own hobbies and
-practices, like a digital journal for tracking progress and moments.
-Entries can be exported as a portable JSON file and imported again later
-to pick up where you left off.
+Dabble runs entirely in the browser. Anyone visiting can reset it to a blank
+slate and start their own constellation from their own practices, like a
+digital journal for tracking progress and moments. Entries can be exported as
+a portable JSON file and imported again later.
 
 ## Future Work
 
-Dabble is still in progress. Features I'm planning next include:
+Dabble is a working tool and also a first step. Right now it holds one
+person's history.
 
-- **Connections between entries** — visualizing links across events, such
-  as shared locations, feelings, or life events
-- **Material artifacts** — objects tied to a practice or era rather than a
-  single date (a pair of shoes, a song, a video that shaped a style),
-  linked to the moments they relate to
-- **Multi-category entries** — e.g. a trip that involved both shuffle
-  dancing and pole & calisthenics training, possibly shown as a blend of
-  each category's color
-- **Richer media and locations** — photo and voice-note attachments,
-  previews of linked videos, and mappable locations
+### Limits so far
+
+- **One person, one dataset.** Everything I've learned about it comes from my
+  own use, so I can't say yet what holds up for other people or other
+  practices.
+- **Data lives in the browser.** Export and import is the only way to move or
+  back up data.
+- **Reflection is manual.** The app makes it possible to revisit a moment,
+  but doesn't help me notice which moments are worth revisiting.
+
+### What's next
+
+- **Connections between entries**: visualizing links across events, such as
+  shared locations, feelings, or life events
+- **Material artifacts**: objects tied to a practice or era rather than a
+  single date (a pair of shoes, a song, a video that shaped a style), linked
+  to the moments they relate to
+- **Multi-category entries**: e.g. a trip that involved both shuffle dancing
+  and pole training, possibly shown as a blend of each category's color
+- **Richer media and locations**: photo and voice-note attachments, previews
+  of linked videos, and mappable locations
 - **A list/table view** for browsing entries outside the visualizations
-- **Accounts and cross-device sync**, replacing JSON import/export as the
-  main way to save data
+- **Accounts and cross-device sync**, replacing export/import as the main way
+  to save data
+
+### Longitudinal Research Directions
+
+Because reflections are dated separately from the moments they refer to,
+Dabble records something most trackers don't: *how my account of the same
+event changes over time*. That makes it a natural instrument for longitudinal
+research.
+
+**Questions I'd like to explore**
+
+- When people revisit the same moment months or years later, what changes:
+  the facts, the emotions, or the meaning they give it?
+- Does seeing a practice laid out over time change how people understand
+  their own trajectory, and does it change what they do next?
+- Do the kinds of moments people record shift over a practice's life, from
+  firsts and milestones, to community, to setbacks and doubts?
+- How do life events outside the practice relate to changes inside it, and
+  what do people notice only after seeing both on one timeline?
+
+**A possible path**
+
+1. *Long-term self-study.* Continue using Dabble on my own practice as an
+   autobiographical design study, with scheduled revisits of earlier entries,
+   and treat the accumulating reflections as data about how hindsight works.
+2. *Diary study with other dancers.* Invite a small group of dancers from
+   different styles to keep their own Dabble over several months, with
+   periodic interviews about what they recorded, what they went back to, and
+   what the views surfaced for them.
+3. *Design iteration from what's learned.* Use both to decide which of the
+   planned features (connections, artifacts, multi-category entries) earn
+   their place.
+
+**Considerations**
+
+The entries are personal and sometimes about health, relationships, or
+community conflict. Dabble currently stores nothing outside the user's
+browser, and that is a feature for this kind of work. Any study would keep it
+that way by default: participants decide what to export and share, and
+consent covers both what is collected and how it will be represented.

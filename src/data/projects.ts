@@ -18,12 +18,12 @@ export const projects: Project[] = [
     id: 'dabble',
     title: 'Dabble',
     tagline: 'Web app for hobby tracking, visualization, and reflection',
-    comingSoon: true,
+    comingSoon: false,
     // Inverted on purpose: Dabble's own default (dark) stands out against the
     // light portfolio, and vice versa.
     cover: { light: 'dabble-thumbnail-dark.png', dark: 'dabble-thumbnail-light.png' },
   },
-  { id: 'choreomapper', title: 'ChoreoMapper', tagline: "Master's thesis — visualization and archival tool for dancers" },
+  { id: 'choreomapper', title: 'ChoreoMapper', tagline: "Master's thesis research project — visualization and archival tool for dance practitioners" },
   { id: 'hey-siri', title: 'Hey Siri, Are You A Feminist?', tagline: 'Research study on gender bias in voice assistant design' },
-  { id: 'arobot', title: 'ARobot for Sustainable Mobility in Seestadt', tagline: 'Speculative design of an AR-based robot for an urban space', comingSoon: true },
+  { id: 'arobot', title: 'ARobot for Sustainable Mobility in Seestadt', tagline: 'Speculative design of an AR-based robot for an urban space' },
 ];

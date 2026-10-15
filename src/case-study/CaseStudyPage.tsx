@@ -3,7 +3,7 @@ import { GlassCard } from '../components/GlassCard';
 import { mdxComponents } from '../components/mdx';
 import { Signature } from '../components/Signature';
 import { CaseStudyIdContext, caseStudyAssetUrl } from '../content/case-studies/assets';
-import type { CaseStudyModule } from '../content/case-studies/types';
+import { type CaseStudyModule, isUnderConstruction } from '../content/case-studies/types';
 import { pageTurnName } from '../router';
 import { CaseStudyPager } from './CaseStudyPager';
 import './CaseStudy.css';
@@ -76,6 +76,13 @@ export function CaseStudyPage({ id, study, outlineOpen }: CaseStudyPageProps) {
               </div>
             ))}
           </dl>
+        )}
+        {/* Same heads-up as the Work card's ribbon, for anyone landing here directly */}
+        {isUnderConstruction(meta) && (
+          <p className="case-study__status" role="note">
+            <strong>Under construction</strong> — this case study is still being finalized, so its content may
+            change.
+          </p>
         )}
       </GlassCard>
 

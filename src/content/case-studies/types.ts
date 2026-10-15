@@ -12,6 +12,18 @@ export interface CaseStudyMeta {
   year?: string;
   /** Filename in assets/<id>/ — the Work card's thumbnail. Without one, the card shows a placeholder pattern. */
   coverImage?: string;
+  /**
+   * "under-construction": real copy/media, but not finished — the card gets a
+   * caution ribbon and the page a banner; both stay fully usable. Omitted =
+   * "published". (Distinct from a project's `comingSoon`, which means no page at all.)
+   */
+  status?: CaseStudyStatus;
+}
+
+export type CaseStudyStatus = 'published' | 'under-construction';
+
+export function isUnderConstruction(meta: Pick<CaseStudyMeta, 'status'> | undefined) {
+  return meta?.status === 'under-construction';
 }
 
 /** An outline entry, generated from the file's ## / ### headings at build time */

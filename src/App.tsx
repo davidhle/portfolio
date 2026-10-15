@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { CaseStudyOutline, OUTLINE_DOCKED_QUERY } from './components/CaseStudyOutline';
 import { SideNav } from './components/SideNav';
+import { StickerDefs } from './components/Sticker';
 import { ThemeToggle } from './components/ThemeToggle';
 import { CaseStudyPage } from './case-study/CaseStudyPage';
 import { getLoadedCaseStudy } from './content/case-studies';
@@ -24,6 +25,7 @@ export default function App() {
     <>
       <SideNav inCaseStudy={Boolean(study)} />
       <ThemeToggle />
+      <StickerDefs />
       {route.name === 'case-study' && study ? (
         <>
           <CaseStudyPage key={route.id} id={route.id} study={study} outlineOpen={outlineOpen} />
